@@ -1,4 +1,3 @@
-package photos;
 import java.util.*;
 
 public class AlbumPhoto {
@@ -24,6 +23,10 @@ public class AlbumPhoto {
 	
 	public void ajouterPhoto(Photo p){
 		this.getAlbum().add(p);
+	}
+	
+	public String toString(){
+		return new String("Album "+this.getNom()+" : "+this.getAlbum());
 	}
 	
 }
