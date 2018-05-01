@@ -13,9 +13,31 @@ public class Photo {
 	private String nom;
 	private GregorianCalendar date;
 	
-	public Photo(String nom){
+	public Photo(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
+		
 		File f;
+		String s = "";
 		f = new File(nom);
+		
+		if(!f.exists()) {
+			PhotoNotFoundException e = new PhotoNotFoundException(nom, "Photo inexistante");
+			throw e;
+		}
+		
+		StringTokenizer nt = new StringTokenizer(nom, ".");
+		String Ft = null;
+		while(nt.hasMoreTokens()){
+			Ft = nt.nextToken();
+		}
+		
+		if(!(Ft.equals("jpg") || Ft.equals("jpeg") || Ft.equals("gif")) ) {
+			UnhandledFormatException eu = new UnhandledFormatException(Ft,"Mauvais format");
+			throw eu;
+		}
+		
+		String prt = f.getParent();
+		this.BonNomRepertoire(nom,s);
+		
 		Date dt = new Date(f.lastModified());
 		String date = Photo.DATEFORMAT.format(dt);
 		StringTokenizer st = new StringTokenizer(date, "/");
@@ -39,6 +61,16 @@ public class Photo {
 	
 	public GregorianCalendar getDate(){
 		return this.date;
+	}
+	
+	public void BonNomRepertoire(String nom, String dossier) throws WrongFileException{
+		dossier = "images";
+		File f = new File(nom);
+		String prt = f.getParent();
+		if(prt.equals(dossier) == false) {
+			WrongFileException ew = new WrongFileException(prt ,"Mauvais répertoire");
+			throw ew;
+		}
 	}
 	
 	public void setNom(String nom){

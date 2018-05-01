@@ -8,4 +8,8 @@ public class Personne {
 		this.nom = nom;
 		this.mail = mail;
 	}
+	
+	public String toString(){
+		return new String("Nom : "+this.nom+"\nMail : "+this.mail);
+	}
 }
