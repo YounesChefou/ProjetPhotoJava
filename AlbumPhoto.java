@@ -10,17 +10,6 @@ public class AlbumPhoto {
 		this.album = new ArrayList<Photo>();
 	}
 	
-	/*
-	public AlbumPhoto(String ligne){
-		StringTokenizer st = new StringTokenizer(ligne, ": ");
-		if(st.nextToken().equals("Album")){
-			this.nom = st.nextToken();
-			this.album = new ArrayList<Photo>();
-		}
-		
-	}
-	*/
-	
 	public String getNom(){
 		return this.nom;
 	}
@@ -33,6 +22,9 @@ public class AlbumPhoto {
 		this.nom = nom;
 	}
 	
+	public void setAlbum(ArrayList<Photo> album){
+		this.album = album;
+	}
 	public void ajouterPhoto(Photo p){
 		this.getAlbum().add(p);
 	}
@@ -43,7 +35,7 @@ public class AlbumPhoto {
 		String ligne = null;
 		String nom = null;
 		Photo p = null;
-		AlbumPhoto album = null;
+		ArrayList<Photo> album = new ArrayList<Photo>();
 		try{
 			File inputFile = new File(fichier);
 			bIn = new BufferedReader(new FileReader(inputFile));
@@ -52,14 +44,14 @@ public class AlbumPhoto {
 			while(st.hasMoreTokens()){
 				nom = st.nextToken();
 			}
-			album = new AlbumPhoto(nom);
+			this.setNom(nom);
 			ligne = bIn.readLine();
 			while (ligne != null){
 				try{
 					StringTokenizer str = new StringTokenizer(ligne, " ");
 					nom = str.nextToken();
 					p = new Photo(nom);
-					album.ajouterPhoto(p);
+					album.add(p);
 				}
 				catch(UnhandledFormatException e){
 					System.out.println(e);
@@ -76,9 +68,6 @@ public class AlbumPhoto {
 				catch(Exception exce){
 					System.out.println(exce);
 				}
-				finally{
-					System.out.println(nom);
-				}
 				ligne = bIn.readLine();
 			}
 		}
@@ -89,7 +78,7 @@ public class AlbumPhoto {
 			System.out.println(e) ;
 	                }
 		finally	{
-			System.out.println(album);
+			this.setAlbum(album);
 			if (bIn != null) {
 					try {
 						bIn.close();
@@ -108,7 +97,7 @@ public class AlbumPhoto {
 		FileWriter fOut = null;
 		try{
 			bOut = new BufferedWriter(new FileWriter(fichier));
-			bOut.write("Album: " + getNom());		
+			bOut.write("Album: " + this.getNom());		
 			bOut.newLine();
 			
 			for(Photo ab : album){
