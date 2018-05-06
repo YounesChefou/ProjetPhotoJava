@@ -34,17 +34,32 @@ public class AlbumPhotoEvent {
 			this.nom = nom;
 		}
 		
-		public void ajouterPhoto(PhotoEvent p){ //à compléter ou pas
-			this.getAlbum().add(p);
+		public void setAlbum(ArrayList<PhotoEvent> album){
+			this.album = album;
+		}
+		
+		public void ajouterPhoto(PhotoEvent p) throws WrongEventException{
+			String nomAlbum = this.evenement.getNomEvent();
+			String evenementPhoto = p.getEvent().getNomEvent();
+			if(nomAlbum.equals(evenementPhoto))
+				this.getAlbum().add(p);
+			else{
+				WrongEventException we = new WrongEventException(p.getEvent(), "Evenement non correspondant à l'album");
+				throw we;
+			}
 		}
 		
 		public void charge(String fichier){
 			
 			BufferedReader bIn = null;
+			String test = null;
 			String ligne = null;
+			Event event = null;
 			String nom = null;
+			String mail = null;
 			PhotoEvent p = null;
 			AlbumPhotoEvent album = null;
+			ArrayList<PhotoEvent> listep = new ArrayList<PhotoEvent>();
 			try{
 				File inputFile = new File(fichier);
 				bIn = new BufferedReader(new FileReader(inputFile));
@@ -53,13 +68,22 @@ public class AlbumPhotoEvent {
 				while(st.hasMoreTokens()){
 					nom = st.nextToken();
 				}
-				album = new AlbumPhotoEvent(nom);
+				event = new Event(nom);
 				ligne = bIn.readLine();
 				while (ligne != null){
+					StringTokenizer str = new StringTokenizer(ligne, ": ");
+					if(str.nextToken().equals("Personnes")){
+						ligne = bIn.readLine();
+						str = new StringTokenizer(ligne, ": ");
+						
+						while(str.nextToken().equals("AlbumEvent")==false){
+							
+						}
+					}
 					try{
-						StringTokenizer str = new StringTokenizer(ligne, " ");
-						nom = str.nextToken();
-						p = new PhotoEvent(nom);
+						StringTokenizer str2 = new StringTokenizer(ligne, " ");
+						nom = str2.nextToken();
+						p = new PhotoEvent(nom, event);
 						album.ajouterPhoto(p);
 					}
 					catch(UnhandledFormatException e){
