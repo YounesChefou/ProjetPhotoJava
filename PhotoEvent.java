@@ -19,6 +19,9 @@ public class PhotoEvent extends Photo {
 				WrongFileException ew = new WrongFileException(prt,"Mauvais répertoire evenement");
 				throw ew;
 			}
+			else{
+				System.out.println("Bon nom.");
+			}
 		}
 		
 		public Event getEvent(){

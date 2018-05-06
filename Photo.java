@@ -36,7 +36,9 @@ public class Photo {
 		}
 		
 		String prt = f.getParent();
-		this.BonNomRepertoire(nom,s);
+		if(this instanceof PhotoEvent == false){
+				this.BonNomRepertoire(nom,s);
+		}
 		
 		Date dt = new Date(f.lastModified());
 		String date = Photo.DATEFORMAT.format(dt);

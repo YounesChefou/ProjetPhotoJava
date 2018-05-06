@@ -52,39 +52,33 @@ public class AlbumPhotoEvent {
 		public void charge(String fichier){
 			
 			BufferedReader bIn = null;
-			String test = null;
 			String ligne = null;
-			Event event = null;
 			String nom = null;
-			String mail = null;
+			String fichierEvent = null;
 			PhotoEvent p = null;
-			AlbumPhotoEvent album = null;
-			ArrayList<PhotoEvent> listep = new ArrayList<PhotoEvent>();
+			ArrayList<PhotoEvent> liste = new ArrayList<PhotoEvent>();
 			try{
 				File inputFile = new File(fichier);
 				bIn = new BufferedReader(new FileReader(inputFile));
 				ligne = bIn.readLine();
 				StringTokenizer st = new StringTokenizer(ligne, ": ");
 				while(st.hasMoreTokens()){
+					fichierEvent = st.nextToken();
+				}
+				this.evenement.charge(fichierEvent);
+				ligne = bIn.readLine();
+				StringTokenizer st1 = new StringTokenizer(ligne, ": ");
+				while(st.hasMoreTokens()){
 					nom = st.nextToken();
 				}
-				event = new Event(nom);
+				this.setNom(nom);
 				ligne = bIn.readLine();
 				while (ligne != null){
-					StringTokenizer str = new StringTokenizer(ligne, ": ");
-					if(str.nextToken().equals("Personnes")){
-						ligne = bIn.readLine();
-						str = new StringTokenizer(ligne, ": ");
-						
-						while(str.nextToken().equals("AlbumEvent")==false){
-							
-						}
-					}
 					try{
 						StringTokenizer str2 = new StringTokenizer(ligne, " ");
 						nom = str2.nextToken();
-						p = new PhotoEvent(nom, event);
-						album.ajouterPhoto(p);
+						p = new PhotoEvent(nom, this.evenement);
+						liste.add(p);
 					}
 					catch(UnhandledFormatException e){
 						System.out.println(e);
@@ -101,9 +95,6 @@ public class AlbumPhotoEvent {
 					catch(Exception exce){
 						System.out.println(exce);
 					}
-					finally{
-						System.out.println(nom);
-					}
 					ligne = bIn.readLine();
 				}
 			}
@@ -114,7 +105,7 @@ public class AlbumPhotoEvent {
 				System.out.println(e) ;
 		                }
 			finally	{
-				System.out.println(album);
+				this.setAlbum(liste);
 				if (bIn != null) {
 						try {
 							bIn.close();
@@ -129,11 +120,16 @@ public class AlbumPhotoEvent {
 		}
 		
 		public void sauv(String fichier){
+			String nomEvent = this.getEvent().getNomEvent();
+			String fichierEvent = nomEvent+"Event.txt";
 			BufferedWriter bOut = null;
 			FileWriter fOut = null;
+			this.getEvent().sauv(fichierEvent);
 			try{
 				bOut = new BufferedWriter(new FileWriter(fichier));
-				bOut.write("AlbumEvent: " + getEvent());		
+				bOut.write("Event: " + fichierEvent);		
+				bOut.newLine();
+				bOut.write("AlbumEvent: " + this.getNom());		
 				bOut.newLine();
 				
 				for(PhotoEvent ab : album){
@@ -159,6 +155,10 @@ public class AlbumPhotoEvent {
 			
 		}
 		public String toString(){
-			return new String("Album de l'evenement "+this.getEvent().getNomEvent()+this.getAlbum());
+			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
+			for(PhotoEvent p : this.getAlbum()){
+				s += p+"\n\n";
+			}
+			return s;
 		}
 }
