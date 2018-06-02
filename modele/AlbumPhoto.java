@@ -7,7 +7,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import exception.*;
 
-public class AlbumPhoto {
+public class AlbumPhoto extends Observable{
 	private String nom;
 	private ArrayList<Photo> album;
 	
@@ -56,40 +56,47 @@ public class AlbumPhoto {
 	}
 	public void ajouterPhoto(Photo p){
 		this.getAlbum().add(p);
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	public void ajouterPhotosListe(ArrayList<Photo> listePhotos){
 		this.album.addAll(listePhotos);
+//		this.setChanged();
+//		this.notifyObservers();
 	}
 	
 	public void ajouterPhotosAlbum(AlbumPhoto a){
 		this.album.addAll(a.getAlbum());
+//		this.setChanged();
+//		this.notifyObservers();
 	}
 	
-	public void ajouterPhotosFileChooser() throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
+	public void ajouterPhotosFile(File[] files){
 		Photo p;
 		ArrayList<Photo> liste = new ArrayList<Photo>();
-		JFileChooser fc = new JFileChooser("./images");
-		// Pour ne choisir que les fichiers qui nous intéressent graĉe à leurs suffixes
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "gif","jpeg");
-		fc.setFileFilter(filter);
-		fc.setMultiSelectionEnabled(true) ;			
-		int returnVal = fc.showOpenDialog(null);
-		/* retourne un des 3 mnémoniques : JFileChooser.CANCEL_OPTION,
-		 JFileChooser.APPROVE_OPTION ou JFileCHooser.ERROR_OPTION suivant la manière dont 
-		l'utilisateur est sorti de la boite de dialogue
-		*/	 
-
-	    if (returnVal == JFileChooser.APPROVE_OPTION)	{ 
-	   			//on récupère alors les fichiers sélectionnés
-				File[] files = fc.getSelectedFiles();
-				for (File f : files)	{
+		for (File f : files){
+			try{
 				p = new Photo("images/"+f.getName());
 				liste.add(p);
+			}
+				catch(UnhandledFormatException e){
+					System.out.println(e);
 				}
-		this.ajouterPhotosListe(liste);		
+				
+				catch(PhotoNotFoundException ex){
+					System.out.println(ex);
+				}
+				
+				catch(WrongFileException exc){
+					System.out.println(exc);
+				}
 		}
+		this.ajouterPhotosListe(liste);
+		this.setChanged();
+		this.notifyObservers();
 	}
+	
 	public int getTaille(){
 		return this.album.size();
 	}
@@ -129,9 +136,9 @@ public class AlbumPhoto {
 					System.out.println(exc);
 				}
 				
-				catch(Exception exce){
-					System.out.println(exce);
-				}
+//				catch(Exception exce){
+//					System.out.println(exce);
+//				}
 				ligne = bIn.readLine();
 			}
 		}
@@ -156,11 +163,17 @@ public class AlbumPhoto {
 		
 	}
 	
+	/**
+	 * Permet de sauvegarder dans un fichier, le nom de l'album et le chemin des photos qui le composent.
+	 * @param fichier, nom du fichier de sauvegarde.
+	 */
+	
 	public void sauv(String fichier){
 		BufferedWriter bOut = null;
 		FileWriter fOut = null;
 		try{
-			bOut = new BufferedWriter(new FileWriter(fichier));
+			File outputFile = new File(fichier);
+			bOut = new BufferedWriter(new FileWriter(outputFile));
 			bOut.write("Album: " + this.getNom());		
 			bOut.newLine();
 			
@@ -183,9 +196,8 @@ public class AlbumPhoto {
 	                	}
 					}
 			}
-		
-		
 	}
+	
 	public String toString(){
 		String s = new String("Album : "+this.getNom()+"\n\n");
 		for(Photo p : this.getAlbum()){

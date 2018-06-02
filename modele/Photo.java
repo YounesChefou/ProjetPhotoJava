@@ -16,32 +16,9 @@ public class Photo {
 	private GregorianCalendar date;
 	
 	public Photo(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
-		
 		File f;
-		String s = "";
 		f = new File(nom);
-		
-		if(!f.exists()) {
-			PhotoNotFoundException e = new PhotoNotFoundException(nom, "Photo inexistante");
-			throw e;
-		}
-		
-		StringTokenizer nt = new StringTokenizer(nom, ".");
-		String Ft = null;
-		while(nt.hasMoreTokens()){
-			Ft = nt.nextToken();
-		}
-		
-		if(!(Ft.equals("jpg") || Ft.equals("jpeg") || Ft.equals("gif")) ) {
-			UnhandledFormatException eu = new UnhandledFormatException(Ft,"Mauvais format");
-			throw eu;
-		}
-		
-		String prt = f.getParent();
-		if(this instanceof PhotoEvent == false){
-				this.BonNomRepertoire(nom,s);
-		}
-		
+		this.verificationFichier(f);
 		Date dt = new Date(f.lastModified());
 		String date = Photo.DATEFORMAT.format(dt);
 		StringTokenizer st = new StringTokenizer(date, "/");
@@ -55,8 +32,6 @@ public class Photo {
 		}
 		this.nom = f.getName();
 		this.date = new GregorianCalendar(annee, mois, jour);
-		
-		
 	}
 	
 	public String getNom(){
@@ -66,16 +41,41 @@ public class Photo {
 	public String getPath(){
 		return new String("images/"+this.nom);
 	}
+	/**
+	 * Retourne la date de prise de la photo
+	 * @return this.date, date de la photo
+	 */
 	public GregorianCalendar getDate(){
 		return this.date;
 	}
 	
-	public void BonNomRepertoire(String nom, String dossier) throws WrongFileException{
-		dossier = "images";
-		File f = new File(nom);
-		String prt = f.getParent();
-		if(prt.equals(dossier) == false) {
-			WrongFileException ew = new WrongFileException(prt ,"Mauvais répertoire");
+	/**
+	 * Verifie que le fichier donné en paramètre correspond bien aux critères établis pour la classe Photo.
+	 * @param f le fichier à verifier
+	 * @throws PhotoNotFoundException, si le fichier est inexistant
+	 * @throws UnhandledFormatException, si le format du fichier ne correspond aux formats pris en charge
+	 * @throws WrongFileException, si le fichier ne se trouve pas au bon endroit
+	 */
+	
+	public void verificationFichier(File f) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
+		if(!f.exists()) {
+			PhotoNotFoundException e = new PhotoNotFoundException(nom, "Photo inexistante");
+			throw e;
+		}
+		
+		StringTokenizer nt = new StringTokenizer(f.getName(), ".");
+		String Ft = null;
+		while(nt.hasMoreTokens()){
+			Ft = nt.nextToken();
+		}
+		if(!(Ft.equals("jpg") || Ft.equals("jpeg") || Ft.equals("gif")) ) {
+			UnhandledFormatException eu = new UnhandledFormatException(Ft,"Mauvais format");
+			throw eu;
+		}
+		StringTokenizer st = new StringTokenizer(f.getPath(), "/");
+		String dossier = st.nextToken();
+		if(!dossier.equals("images")){
+			WrongFileException ew = new WrongFileException(dossier ,"Mauvais répertoire");
 			throw ew;
 		}
 	}
