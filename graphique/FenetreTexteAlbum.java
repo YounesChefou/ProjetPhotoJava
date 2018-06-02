@@ -3,25 +3,24 @@ package graphique;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 import graphique.FenetreAlbum.MenuListener;
 import modele.*;
 
-public class FenetreTexteAlbum extends JFrame{
+public class FenetreTexteAlbum extends JFrame implements Observer{
 		private AlbumPhoto album;
+		private AlbumControleur controleur;
 		private JTextArea  liste;
 		
 		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto album){
 			super(album.getNom());
 			this.initialiseMenu();
 			this.album = album;
+			album.addObserver(this);
+			this.controleur = new AlbumControleur(album);
 			this.initialiseComposants();
 			this.setBounds(x,y,w,h);
 			this.setVisible(true);
@@ -42,6 +41,10 @@ public class FenetreTexteAlbum extends JFrame{
 			mdef.add(mdefEnlever);
 			mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
 			mdefAjouter.addActionListener(new MenuListener("Enlever une photo"));
+		}
+		
+		public void update(Observable o, Object arg){
+			this.liste.setText(this.album.toString());
 		}
 		
 		public AlbumPhoto getAlbum(){
