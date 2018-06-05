@@ -3,43 +3,82 @@ import java.util.*;
 import java.io.*;
 import exception.*;
 
+/**
+ * Classe de gestion d'un album photo évènement
+ * @author Cheffou Gang
+ *
+ */
 public class AlbumPhotoEvent {
 		private String nom;
 		private Event evenement;
 		private ArrayList<PhotoEvent> album;
 		
+		/**
+		 * Construit une instance d'AlbumPhotoEvent
+		 * @param E 	L'évènement de l'album
+		 */
 		public AlbumPhotoEvent(Event E){
 			this.nom = E.getNomEvent();
 			this.evenement = E;
 			this.album = new ArrayList<PhotoEvent>();
 		}
 		
+		/**
+		 * Construit une instance d'AlbumPhotoEvent
+		 * @param nom 	Le nom de l'évènement de l'album
+		 */
 		public AlbumPhotoEvent(String nom){
 			Event E = new Event(nom);
 			this.nom = E.getNomEvent();
 			this.evenement = E;
 			this.album = new ArrayList<PhotoEvent>();
 		}
-
+		
+		/**
+		 * Retourne le nom de l'album photo évènement
+		 * @return Le nom de l'album photo évènement
+		 */
 		public String getNom(){
 			return this.nom;
 		}
 		
+		/**
+		 * Retourne l'album photo évènement
+		 * @return l'album photo évènement
+		 */
 		public ArrayList<PhotoEvent> getAlbum(){
 			return this.album;
 		}
 		
+		/**
+		 * Retourne l'évènement de l'album photo évènement
+		 * @return Le l'évènement de l'album photo évènement
+		 */
 		public Event getEvent(){
 			return this.evenement;
 		}
+		
+		/**
+		 * Change le nom de l'album photo évènement
+		 * @param nom 	Le nouveau nom de l'album photo évènement
+		 */
 		public void setNom(String nom){
 			this.nom = nom;
 		}
 		
+		/**
+		 * Change les photos évènement de l'album photo évènement 
+		 * @param album 	Les nouvelles photos évènement
+		 */
 		public void setAlbum(ArrayList<PhotoEvent> album){
 			this.album = album;
 		}
 		
+		/**
+		 * Ajout d'une photo évènement dans l'album photo évènement
+		 * @param p 	La photo évènement à ajouter
+		 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
+		 */
 		public void ajouterPhoto(PhotoEvent p) throws WrongEventException{
 			String nomAlbum = this.evenement.getNomEvent();
 			String evenementPhoto = p.getEvent().getNomEvent();
@@ -121,6 +160,10 @@ public class AlbumPhotoEvent {
 			
 		}
 		
+		/**
+		 * Permet de sauvegarder dans un fichier, le nom de l'album photo évènement et le chemin des photos qui le composent.
+		 * @param fichier 	nom du fichier de sauvegarde.
+		 */
 		public void sauv(String fichier){
 			String nomEvent = this.getEvent().getNomEvent();
 			String fichierEvent = nomEvent+"Event.txt";
