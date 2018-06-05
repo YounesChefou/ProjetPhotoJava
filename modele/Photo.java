@@ -5,6 +5,11 @@ import java.text.*;
 import java.io.*;
 import exception.*;
 
+/**
+ * 
+ * @author Cheffou Gang
+ *
+ */
 public class Photo {
 	public static SimpleDateFormat DATEFORMAT;
 	
@@ -15,6 +20,13 @@ public class Photo {
 	private String nom;
 	private GregorianCalendar date;
 	
+	/**
+	 * Construit une instance de Photo
+	 * @param nom 	Le nom de la photo
+	 * @throws PhotoNotFoundException Si la photo n'existe pas
+	 * @throws UnhandledFormatException Si la photo évènement a le mauvais format
+	 * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
+	 */
 	public Photo(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
 		File f;
 		f = new File(nom);
@@ -34,10 +46,18 @@ public class Photo {
 		this.date = new GregorianCalendar(annee, mois, jour);
 	}
 	
+	/**
+	 * Retourne le nom de la photo
+	 * @return le nom de la photo
+	 */
 	public String getNom(){
 		return this.nom;
 	}
 	
+	/**
+	 * Retourne le chemin de la photo
+	 * @return images/ et le nom de la photo
+	 */
 	public String getPath(){
 		return new String("images/"+this.nom);
 	}
@@ -80,6 +100,10 @@ public class Photo {
 		}
 	}
 	
+	/**
+	 * Change le nom de la photo
+	 * @param nom 	Le nouveau nom de la photo
+	 */
 	public void setNom(String nom){
 		this.nom = nom;
 	}
