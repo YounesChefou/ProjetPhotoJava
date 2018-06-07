@@ -111,10 +111,15 @@ public class AlbumPhoto extends Observable{
 	 * Ajout d'une photo dans l'album photo
 	 * @param p 	La photo à ajouter dans l'album photo
 	 */
-	public void ajouterPhoto(Photo p){
+	public void ajouterPhoto(Photo p) throws PhotoAlreadyHereException{
+		if(this.album.contains(p)) {
+			PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
+			throw r;
+		}
 		this.getAlbum().add(p);
+		PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
 		this.setChanged();
-		this.notifyObservers();
+		this.notifyObservers(photoEtat);
 	}
 	
 	/**
@@ -141,13 +146,20 @@ public class AlbumPhoto extends Observable{
 	 * Ajout de photos à partir d'un tableau de fichier
 	 * @param files 	
 	 */
-	public void ajouterPhotosFile(File[] files){
+	public void ajouterPhotosFile(File[] files) throws PhotoAlreadyHereException{
 		Photo p;
 		ArrayList<Photo> liste = new ArrayList<Photo>();
 		for (File f : files){
 			try{
 				p = new Photo("images/"+f.getName());
+				if(this.album.contains(p)) {
+					PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
+					throw r;
+				}
 				liste.add(p);
+				PhotoEtatAlbum etatPhoto = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
+				this.setChanged();
+				this.notifyObservers(etatPhoto);
 			}
 				catch(UnhandledFormatException e){
 					System.out.println(e);
@@ -162,9 +174,9 @@ public class AlbumPhoto extends Observable{
 				}
 		}
 		this.ajouterPhotosListe(liste);
-		this.setChanged();
-		this.notifyObservers();
-	}
+	
+}
+
 	
 	public void supprimerPhoto(Photo p) {
 		this.album.remove(p);
