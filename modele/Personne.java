@@ -1,13 +1,14 @@
 package modele;
 
 /**
- * Classe de gestion de peronne
+ * Classe de gestion de personnes
  * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class Personne {
-	private String nom;
-	private String mail;
+	// Variables d'instance
+	private String nom;		// Le nom de la personne
+	private String mail;		// Le mail de la personne
 	
 	/**
 	 * Construit une instance de Personne
@@ -15,8 +16,8 @@ public class Personne {
 	 * @param mail 	Le mail de la personne
 	 */
 	public Personne(String nom, String mail){
-		this.nom = nom;
-		this.mail = mail;
+		this.nom = nom;		// Initialise la variable d'instance nom
+		this.mail = mail;	// Initialise la variable d'instance mail
 	}
 	
 	/**
@@ -37,6 +38,7 @@ public class Personne {
 	
 	/**
 	 * Permet d'afficher la personne sous la forme d'une chaîne de caractères
+	 * @return la chaîne de caractères
 	*/
 	public String toString(){
 		return new String("Nom : "+this.nom+"\nMail : "+this.mail);
