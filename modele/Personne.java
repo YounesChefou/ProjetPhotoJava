@@ -1,8 +1,8 @@
 package modele;
 
 /**
- * 
- * @author Cheffou Gang
+ * Classe de gestion de peronne
+ * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class Personne {
@@ -34,6 +34,10 @@ public class Personne {
 	public String getMail(){
 		return this.mail;
 	}
+	
+	/**
+	 * Permet d'afficher la personne sous la forme d'une chaîne de caractères
+	*/
 	public String toString(){
 		return new String("Nom : "+this.nom+"\nMail : "+this.mail);
 	}
