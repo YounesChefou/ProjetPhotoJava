@@ -15,16 +15,17 @@ import java.util.*;
  *
  */
 public class Event {
-	private String nom;
-	private ArrayList<Personne> listePersonne;
+	// Variables d'instance
+	private String nom;					// nom de l'évènement
+	private ArrayList<Personne> listePersonne;		// liste de personnes associées à l'évènement
 	
 	/**
 	 * Construit une instance d'event
 	 * @param nom	 Le nom de l'évènement
 	 */
 	public Event(String nom){
-		this.nom = nom;
-		this.listePersonne = new ArrayList<Personne>();
+		this.nom = nom;					//Initialise la variable d'instance nom
+		this.listePersonne = new ArrayList<Personne>();	// Initialise la variable d'instance listePersonne
 	}
 	
 	/**
@@ -153,6 +154,7 @@ public class Event {
 	
 	/**
 	 * Permet d'afficher un évènement sous la forme d'une chaîne de caractères
+	 * @return la chaîne de caractères
 	*/
 	public String toString(){
 		String s = new String("Evenement : "+ this.nom+"\n\n");
