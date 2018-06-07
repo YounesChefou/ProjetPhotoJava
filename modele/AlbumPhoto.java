@@ -9,7 +9,7 @@ import exception.*;
 
 /**
  * Classe de gestion d'un album photo
- * @author Cheffou gang
+ * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class AlbumPhoto extends Observable{
@@ -19,7 +19,7 @@ public class AlbumPhoto extends Observable{
 	
 	/**
 	 * Construit une instance de AlbumPhoto
-	 * @param nom	Le nom de l'album
+	 * @param nom	Le nom de l'album photo
 	 */
 	public AlbumPhoto(String nom){
 		this.nom = nom;
@@ -174,6 +174,10 @@ public class AlbumPhoto extends Observable{
 		return this.album.size();
 	}
 	
+	/**
+	 * Permet de remplir un album photo à partir d'un fichier texte
+	 * @param fichier 	Le nom du fichier pour remplir l'album photo
+	*/
 	public void charge(String fichier){
 		
 		BufferedReader bIn = null;
@@ -272,6 +276,9 @@ public class AlbumPhoto extends Observable{
 			}
 	}
 	
+	/**
+	 * Permet d'afficher l'album photo sous la forme d'une chaîne de caractères
+	*/
 	public String toString(){
 		String s = new String("Album : "+this.getNom()+"\n\n");
 		for(Photo p : this.getAlbum()){
