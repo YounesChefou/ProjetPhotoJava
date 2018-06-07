@@ -8,6 +8,9 @@ public class PhotoAlreadyHereException extends Exception {
 		this.nom=n;
 	}
 	
+	/**
+	* Retourne l'excep
+	/
 	public String toString() {
 		return super.toString()+" Photo déja contenue dans l'album : " + this.nom;
 	}
