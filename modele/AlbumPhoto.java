@@ -9,12 +9,13 @@ import exception.*;
 
 /**
  * Classe de gestion d'un album photo
- * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class AlbumPhoto extends Observable{
-	private String nom;
-	private ArrayList<Photo> album;
+	// Variables d'instance
+	private String nom;				// Le nom de l'album photo
+	private ArrayList<Photo> album;			// Les photos de l'album
 	
 	
 	/**
@@ -22,8 +23,8 @@ public class AlbumPhoto extends Observable{
 	 * @param nom	Le nom de l'album photo
 	 */
 	public AlbumPhoto(String nom){
-		this.nom = nom;
-		this.album = new ArrayList<Photo>();
+		this.nom = nom;				// Initialise la variable d'instance nom
+		this.album = new ArrayList<Photo>();	// Initialise la varible d'instance album
 	}
 	
 	/**
@@ -50,11 +51,11 @@ public class AlbumPhoto extends Observable{
 	 * @throws PhotoNotFoundException  si la photo n'a pas été trouvée
 	 */
 	public Photo getPhotoByName(String nom) throws PhotoNotFoundException{
-		for(Photo p : this.album){
-			if(p.getNom().equals(nom))
-				return p;
+		for(Photo p : this.album){		// Boucle qui parcours l'ensemble des photos d'album
+			if(p.getNom().equals(nom)) 	// Test si nom correspond au nom d'une des photos de album
+				return p;		// Retourne la photo si la condition du if est vérifiée
 		}
-		throw new PhotoNotFoundException(nom, "Photo non présente dans l'album.");
+		throw new PhotoNotFoundException(nom, "Photo non présente dans l'album."); // lance l'exception PhotoNotFoundException si aucune des photos d'album ne correspond à nom
 	}
 	
 	/**
