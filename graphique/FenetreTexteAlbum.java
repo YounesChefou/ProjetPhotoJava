@@ -25,11 +25,19 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			this.setBounds(x,y,w,h);
 			this.setVisible(true);
 		}
+	
+		/**
+		* Initialise les différents composants de la fenêtre text sous forme de liste.
+	 	*/
 		
 		private void initialiseComposants(){
 			this.liste = new JTextArea(this.album.toString());
 			this.add(liste, BorderLayout.CENTER);
 		}
+	
+		/**
+		* Initialise les différents composants du Menu.
+	 	*/
 		private void initialiseMenu(){
 			JMenuBar menuBar = new JMenuBar();
 			this.setJMenuBar(menuBar);
@@ -42,6 +50,11 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
 			mdefAjouter.addActionListener(new MenuListener("Enlever une photo"));
 		}
+		/**
+	 	* Met ajour la liste des photos.
+	 	* @param o, .
+		* @param arg, .
+	 	*/
 		
 		public void update(Observable o, Object arg){
 			this.liste.setText(this.album.toString());
