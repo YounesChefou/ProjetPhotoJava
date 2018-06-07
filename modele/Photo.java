@@ -6,19 +6,20 @@ import java.io.*;
 import exception.*;
 
 /**
- * 
- * @author Cheffou Gang
+ * Classe de gestionn d'une photo
+ * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class Photo {
 	public static SimpleDateFormat DATEFORMAT;
 	
 	static{
-		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");
+		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");	// fixe le format d'une date à "dd/MM/yyyy"
 	}
 	
-	private String nom;
-	private GregorianCalendar date;
+	//Variables d'instance
+	private String nom;				// Nom de la photo
+	private GregorianCalendar date;			// Date de la dernière modification de la photo
 	
 	/**
 	 * Construit une instance de Photo
@@ -42,8 +43,8 @@ public class Photo {
 			mois = Integer.parseInt(st.nextToken())-1;
 			annee = Integer.parseInt(st.nextToken());
 		}
-		this.nom = f.getName();
-		this.date = new GregorianCalendar(annee, mois, jour);
+		this.nom = f.getName();					// Initialise la variable d'instance nom
+		this.date = new GregorianCalendar(annee, mois, jour);	// Initialise la variable d'instance date
 	}
 	
 	/**
@@ -61,6 +62,7 @@ public class Photo {
 	public String getPath(){
 		return new String("images/"+this.nom);
 	}
+	
 	/**
 	 * Retourne la date de prise de la photo
 	 * @return this.date, date de la photo
@@ -76,7 +78,6 @@ public class Photo {
 	 * @throws UnhandledFormatException, si le format du fichier ne correspond aux formats pris en charge
 	 * @throws WrongFileException, si le fichier ne se trouve pas au bon endroit
 	 */
-	
 	public void verificationFichier(File f) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
 		if(!f.exists()) {
 			PhotoNotFoundException e = new PhotoNotFoundException(nom, "Photo inexistante");
@@ -107,6 +108,10 @@ public class Photo {
 	public void setNom(String nom){
 		this.nom = nom;
 	}
+	
+	/**
+	 * Permet d'afficher la photo sous la forme d'une chaîne de caractères
+	 */
 	public String toString(){
 		String s = new String("Nom de la photo : "+this.nom+" prise le "+Photo.DATEFORMAT.format(this.date.getTime()));
 		return s;
