@@ -5,7 +5,7 @@ import exception.*;
 
 /**
  * Classe de gestion d'un album photo évènement
- * @author Cheffou Gang
+ * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class AlbumPhotoEvent {
@@ -90,6 +90,10 @@ public class AlbumPhotoEvent {
 			}
 		}
 		
+		/**
+		 * Permet de remplir un album photo évènement à partir d'un fichier txt
+		 * @param fichier	Le nom du fichier pour remplir l'album photo évènement
+		*/
 		public void charge(String fichier){
 			
 			BufferedReader bIn = null;
@@ -199,6 +203,10 @@ public class AlbumPhotoEvent {
 			
 			
 		}
+	
+		/**
+		 * Permet d'afficher chaîne de chaîne d'un album photo évènement
+		*/
 		public String toString(){
 			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
 			for(PhotoEvent p : this.getAlbum()){
