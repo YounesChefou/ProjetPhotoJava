@@ -26,6 +26,11 @@ public class FenetreListeAlbum extends JFrame {
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Initialise les différents composants de la fenêtre dans un fichier text en forme de liste.
+	 * @param p, la Photo qui sera affichée au lancement.
+	 */
+	
 	private void initialiseComposants(){
 		DefaultListModel<Photo> def = new DefaultListModel<Photo>();
 		for(Photo p : this.album.getAlbum())
@@ -33,6 +38,11 @@ public class FenetreListeAlbum extends JFrame {
 		JList<Photo>liste = new JList<Photo>(def);
 		this.add(liste, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Initialise les différents composants du Menu.
+	 * 
+	 */
 	private void initialiseMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
