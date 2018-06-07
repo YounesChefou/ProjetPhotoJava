@@ -6,8 +6,8 @@ public class WrongEventException extends Exception{
 	
 	/**
 	*
-	* @param e
-	* @param message	
+	* @param e		nom de l'évenement
+	* @param message	affiche un message lors 
 	*/
 	
 	public WrongEventException(Event e, String message){
