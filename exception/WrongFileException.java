@@ -5,9 +5,9 @@ public class WrongFileException extends Exception{
 private String nom;
 	
 	/**
-	* 
+	* Mauvais fichier
 	* @param n		nom de l'exception
-	* @param message	message qui s'affiche a l'ouverture de l'exception
+	* @param message	affiche un message lors de l'ouverture de l'exception
 	*/
 	
 	public WrongFileException(String n, String message) {
