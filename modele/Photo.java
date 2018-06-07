@@ -111,6 +111,7 @@ public class Photo {
 	
 	/**
 	 * Permet d'afficher la photo sous la forme d'une chaîne de caractères
+	 * @return la chaîne de caractères
 	 */
 	public String toString(){
 		String s = new String("Nom de la photo : "+this.nom+" prise le "+Photo.DATEFORMAT.format(this.date.getTime()));
