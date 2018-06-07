@@ -13,6 +13,10 @@ public class AlbumControleur {
 		this.modele.ajouterPhotosFile(files);
 	}
 	
+	public void notificationDelModele(Photo p) {
+		this.modele.supprimerPhoto(p);
+		}
+	
 	public void notificationSauvModele(String nomFichier){
 		this.modele.sauv(nomFichier);
 	}
