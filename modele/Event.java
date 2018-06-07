@@ -9,33 +9,64 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Classe de gestion d'évènement
+ * @author Cheffou Gang
+ *
+ */
 public class Event {
 	private String nom;
 	private ArrayList<Personne> listePersonne;
 	
+	/**
+	 * Construit une instance d'event
+	 * @param nom	 Le nom de l'évènement
+	 */
 	public Event(String nom){
 		this.nom = nom;
 		this.listePersonne = new ArrayList<Personne>();
 	}
 	
+	/**
+	 * Retourne le nom de l'évènement
+	 * @return le nom de l'évènement
+	 */
 	public String getNomEvent(){
 		return this.nom;
 	}
 	
+	/**
+	 * Retourne la liste des personnes associées à l'évènement
+	 * @return une ArrayList des personnes associées à l'évènement
+	 */
 	public ArrayList<Personne> getListe(){
 		return this.listePersonne;
 	}
-
+	
+	/**
+	 * Change le nom de l'évènement
+	 * @param nom 	Le nouveau nom de l'évènement
+	 */
 	public void setNomEvent(String nom){
 		this.nom = nom;
 	}
 	
+	/**
+	 * Change la liste des personnes associées à l'évènement
+	 * @param liste 	La nouvelle liste de personnes
+	 */
 	public void setListe(ArrayList<Personne> liste){
 		this.listePersonne = liste;
 	}
+	
+	/**
+	 * Ajoute une personne à la liste de personnes de l'évènement
+	 * @param p 	La personne à ajouter
+	 */
 	public void ajouterPersonne(Personne p){
 		this.listePersonne.add(p);
 	}
+	
 	public void charge(String fichier){
 		BufferedReader bIn = null;
 		String ligne = null;
