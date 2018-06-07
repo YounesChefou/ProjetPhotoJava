@@ -91,7 +91,7 @@ public class AlbumPhotoEvent {
 		}
 		
 		/**
-		 * Permet de remplir un album photo évènement à partir d'un fichier txt
+		 * Permet de remplir un album photo évènement à partir d'un fichier texte
 		 * @param fichier	Le nom du fichier pour remplir l'album photo évènement
 		*/
 		public void charge(String fichier){
@@ -205,7 +205,7 @@ public class AlbumPhotoEvent {
 		}
 	
 		/**
-		 * Permet d'afficher chaîne de chaîne d'un album photo évènement
+		 * Permet d'afficher l'album photo évènement sous la forme d'une chaîne de caractères
 		*/
 		public String toString(){
 			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
