@@ -6,7 +6,7 @@ public class PhotoAlreadyHereException extends Exception {
 	/**
 	* Indique une photo unique
 	* @param n		nom de l'exception
-	* @param message	
+	* @param message	affiche un message lors de l'ouverture de l'exception
 	*/
 	
 	public PhotoAlreadyHereException(String n, String message) {
