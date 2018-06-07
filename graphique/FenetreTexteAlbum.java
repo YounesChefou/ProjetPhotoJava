@@ -50,9 +50,10 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
 			mdefAjouter.addActionListener(new MenuListener("Enlever une photo"));
 		}
+	
 		/**
-	 	* Met ajour la liste des photos.
-	 	* @param o, .
+	 	* Met ajour la liste des photos dans le fenetre text.
+	 	* @param o, album photo .
 		* @param arg, .
 	 	*/
 		
@@ -60,13 +61,25 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			this.liste.setText(this.album.toString());
 		}
 		
+		/**
+		* Methode qui permet de retourner le .
+	 	* @return l'album photo.
+	 	*/
 		public AlbumPhoto getAlbum(){
 			return this.album;
 		}
+	
+		/**
+		* .
+	 	*/
 		
 		public void menuFrame(){
 			this.liste.setText(this.album.toString());
 		}
+	
+		/**
+		* Classe qui permet d'ajouter ou de retirer des photos grace a la barre de menu du ficher text.
+	 	*/
 		
 		class MenuListener implements ActionListener{
 			private String menubar;
