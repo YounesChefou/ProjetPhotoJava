@@ -7,7 +7,7 @@ import exception.*;
 
 /**
  * Classe de gestionn d'une photo
- * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class Photo {
