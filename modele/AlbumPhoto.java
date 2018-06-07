@@ -166,6 +166,21 @@ public class AlbumPhoto extends Observable{
 		this.notifyObservers();
 	}
 	
+	public void supprimerPhoto(Photo p) {
+		this.album.remove(p);
+		PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
+		this.setChanged();
+		this.notifyObservers(photoEtat);
+	}
+	
+	public void supprimerPhotoIndex(int i) {
+		Photo p = this.album.get(i);
+		this.album.remove(i);
+		PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
+		this.setChanged();
+		this.notifyObservers(photoEtat);
+	}
+	
 	/**
 	 * Retourne la taille de l'album photo (le nombre de photo)
 	 * @return la taille de l'album photo
