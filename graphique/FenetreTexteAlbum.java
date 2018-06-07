@@ -57,9 +57,21 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 		* @param arg, .
 	 	*/
 		
-		public void update(Observable o, Object arg){
-			this.liste.setText(this.album.toString());
+		public void update(Observable o, Object arg) {
+		if(arg instanceof PhotoEtatAlbum) {
+			PhotoEtatAlbum maPhotoEtat = (PhotoEtatAlbum) arg;
+			if(maPhotoEtat.getEtat().equals("photo ajoutée")) {
+				this.zoneTexte.append(maPhotoEtat.getNomPhoto()+"\n");
+			}
+			else {
+				String nouveauAlbum = this.al.toString();
+				System.out.println(maPhotoEtat.getNomPhoto());
+				nouveauAlbum = nouveauAlbum.replace(maPhotoEtat.getNomPhoto(),"");
+				this.zoneTexte.setText(nouveauAlbum);
+			}
 		}
+		
+	}
 		
 		/**
 		* Methode qui permet de retourner le .
