@@ -7,7 +7,7 @@ public class UnhandledFormatException extends Exception{
 	/**
 	* Mauvais format de la photo 
 	* @param n	 	nom de l'exception.
-	* @param message	message qui s'affiche a l'ouverture de l'exception.	 
+	* @param message	affiche un message lors de l'ouverture de l'exception	 
 	*/
 	
 	public UnhandledFormatException(String n, String message) {
