@@ -5,33 +5,34 @@ import exception.*;
 
 /**
  * Classe de gestion d'un album photo évènement
- * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class AlbumPhotoEvent {
-		private String nom;
-		private Event evenement;
+		//Variables d'instance
+		private String nom;			// Le nom de l'album photo évènement
+		private Event evenement;		// L'évènement de l'album photo évènement
 		private ArrayList<PhotoEvent> album;
 		
 		/**
-		 * Construit une instance d'AlbumPhotoEvent
+		 * Construit une instance d'AlbumPhotoEvent avec un évènement
 		 * @param E 	L'évènement de l'album
 		 */
 		public AlbumPhotoEvent(Event E){
-			this.nom = E.getNomEvent();
-			this.evenement = E;
-			this.album = new ArrayList<PhotoEvent>();
+			this.nom = E.getNomEvent();			// Initialise la variable d'instance nom
+			this.evenement = E;				// Initialise la variable d'instance evenement
+			this.album = new ArrayList<PhotoEvent>();	// Initialise la variable d'instance album
 		}
 		
 		/**
-		 * Construit une instance d'AlbumPhotoEvent
+		 * Construit une instance d'AlbumPhotoEvent avec un nom
 		 * @param nom 	Le nom de l'évènement de l'album
 		 */
 		public AlbumPhotoEvent(String nom){
-			Event E = new Event(nom);
-			this.nom = E.getNomEvent();
-			this.evenement = E;
-			this.album = new ArrayList<PhotoEvent>();
+			Event E = new Event(nom);			// Créer un évènement du nom passé en paramètre
+			this.nom = E.getNomEvent();			// Initialise la variable d'instance nom
+			this.evenement = E;				// Initialise la variable d'instance evenement
+			this.album = new ArrayList<PhotoEvent>();	// Initialise la variable d'instance album
 		}
 		
 		/**
@@ -80,13 +81,13 @@ public class AlbumPhotoEvent {
 		 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
 		 */
 		public void ajouterPhoto(PhotoEvent p) throws WrongEventException{
-			String nomAlbum = this.evenement.getNomEvent();
+			String nomAlbum = this.evenement.getNomEvent();		  
 			String evenementPhoto = p.getEvent().getNomEvent();
-			if(nomAlbum.equals(evenementPhoto))
-				this.getAlbum().add(p);
+			if(nomAlbum.equals(evenementPhoto))			// Test si le nom de l'album correspond au nom de l'évènement de la photo
+				this.getAlbum().add(p);				// Si la condition du if est vérifiée, on ajoute l'évènement à l'album
 			else{
 				WrongEventException we = new WrongEventException(p.getEvent(), "Evenement non correspondant à l'album");
-				throw we;
+				throw we;					// Lance l'exception WrongEventException si la condition du if n'est pas vérifiée
 			}
 		}
 		
@@ -206,6 +207,7 @@ public class AlbumPhotoEvent {
 	
 		/**
 		 * Permet d'afficher l'album photo évènement sous la forme d'une chaîne de caractères
+		 * @return la chaîne de caractère
 		*/
 		public String toString(){
 			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
