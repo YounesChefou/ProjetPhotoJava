@@ -5,7 +5,7 @@ public class WrongEventException extends Exception{
 	private String evenement;
 	
 	/**
-	*
+	* L'évenement ne correspond pas a l'album évenement
 	* @param e		nom de l'évenement
 	* @param message	message qui s'affiche a l'ouverture de l'exception 
 	*/
