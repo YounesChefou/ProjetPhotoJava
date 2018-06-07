@@ -9,7 +9,7 @@ public class AlbumControleur {
 		this.modele = modele;
 	}
 	
-	public void notificationAjoutModele(File[] files){
+	public void notificationAjoutModele(File[] files) throws PhotoAlreadyHereException{
 		this.modele.ajouterPhotosFile(files);
 	}
 	
