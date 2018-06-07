@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * Classe de gestion d'évènement
- * @author Cheffou Gang
+ * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
 public class Event {
@@ -67,6 +67,10 @@ public class Event {
 		this.listePersonne.add(p);
 	}
 	
+	/**
+	 * Permet de remplir un évènement à partir d'un fichier texte
+	 * @param fichier 	Le nom du fichier pour remplir l'évènement
+	*/
 	public void charge(String fichier){
 		BufferedReader bIn = null;
 		String ligne = null;
@@ -113,6 +117,11 @@ public class Event {
 		
 		
 	}
+	
+	/**
+	 * Permet de sauvegarder dans un fichier, le nom de l'évènement et les personnes concernées
+	 * @param fichier 	nom du fichier de sauvegarde.
+	 */
 	public void sauv(String fichier){
 		BufferedWriter bOut = null;
 		FileWriter fOut = null;
@@ -142,6 +151,9 @@ public class Event {
 		
 	}
 	
+	/**
+	 * Permet d'afficher un évènement sous la forme d'une chaîne de caractères
+	*/
 	public String toString(){
 		String s = new String("Evenement : "+ this.nom+"\n\n");
 		for(Personne p : this.getListe()){
