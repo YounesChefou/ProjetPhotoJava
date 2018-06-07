@@ -7,7 +7,7 @@ public class PhotoNotFoundException extends Exception{
 	/**
 	* Photo non trouvée
 	* @param n		nom de l'exception
-	* @param message	affiche un message
+	* @param message	affiche un message lors de l'ouverture de l'exception
 	*/
 	
 	public PhotoNotFoundException(String n, String message) {
