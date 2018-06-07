@@ -6,8 +6,8 @@ private String nom;
 	
 	/**
 	* 
-	* @param n	
-	* @param message	
+	* @param n		nom de l'exception
+	* @param message	message qui s'affiche a l'ouverture de l'exception
 	*/
 	
 	public WrongFileException(String n, String message) {
