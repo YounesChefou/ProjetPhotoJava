@@ -11,13 +11,16 @@ private AlbumPhotoEvent modele;
 		this.modele=al;
 	}
 
-	public void modifieAlbumAjoute(File[] files) throws PhotoAlreadyHereException {
+	public void notificationAjoutModele(File[] files) throws PhotoAlreadyHereException {
 		this.modele.ajouterPhotosFile(files);
 	}
 	
 	
+	public void notificationSauvModele(String nomFichier){
+		this.modele.sauv(nomFichier);
+	}
 	
-	public void modifieAlbumDel(Photo photo) {
+	public void notificationDelModele(Photo photo) {
 		this.modele.supprimerPhoto(photo);
 		}
 

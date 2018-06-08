@@ -10,13 +10,14 @@ public class Test{
 	public static void main(String[] args)throws 
 	 PhotoNotFoundException, UnhandledFormatException, 
 	 WrongFileException{
-//		AlbumPhotoEvent ab = new AlbumPhotoEvent("spectacle");
-//		ab.charge("spectacle.txt");
-//		System.out.println(ab);
-//		Event e = new Event("mariageToto");
-		Photo p = null;
+		AlbumPhotoEvent ab = new AlbumPhotoEvent("spectacle");
+		ab.charge("spectacle.txt");
+		System.out.println(ab);
+		Event e = new Event("mariageToto");
+		PhotoEvent p = null;
+		System.out.println(ab.getEvent());
 		try{
-			p = new Photo("images/mariageToto/bande.jpeg");
+			p = new PhotoEvent("images/mariageToto/bande.jpeg",e);
 			System.out.println(p);
 		}
 		catch(WrongFileException ex){

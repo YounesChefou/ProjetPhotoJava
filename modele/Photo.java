@@ -5,29 +5,16 @@ import java.text.*;
 import java.io.*;
 import exception.*;
 
-/**
- * Classe de gestionn d'une photo
- * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
- *
- */
 public class Photo {
 	public static SimpleDateFormat DATEFORMAT;
 	
 	static{
-		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");	// fixe le format d'une date à "dd/MM/yyyy"
+		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");
 	}
 	
-	//Variables d'instance
-	private String nom;				// Nom de la photo
-	private GregorianCalendar date;			// Date de la dernière modification de la photo
+	private String nom;
+	private GregorianCalendar date;
 	
-	/**
-	 * Construit une instance de Photo
-	 * @param nom 	Le nom de la photo
-	 * @throws PhotoNotFoundException Si la photo n'existe pas
-	 * @throws UnhandledFormatException Si la photo évènement a le mauvais format
-	 * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
-	 */
 	public Photo(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
 		File f;
 		f = new File(nom);
@@ -43,26 +30,17 @@ public class Photo {
 			mois = Integer.parseInt(st.nextToken())-1;
 			annee = Integer.parseInt(st.nextToken());
 		}
-		this.nom = f.getName();					// Initialise la variable d'instance nom
-		this.date = new GregorianCalendar(annee, mois, jour);	// Initialise la variable d'instance date
+		this.nom = f.getName();
+		this.date = new GregorianCalendar(annee, mois, jour);
 	}
 	
-	/**
-	 * Retourne le nom de la photo
-	 * @return le nom de la photo
-	 */
 	public String getNom(){
 		return this.nom;
 	}
 	
-	/**
-	 * Retourne le chemin de la photo
-	 * @return images/ et le nom de la photo
-	 */
 	public String getPath(){
 		return new String("images/"+this.nom);
 	}
-	
 	/**
 	 * Retourne la date de prise de la photo
 	 * @return this.date, date de la photo
@@ -78,9 +56,10 @@ public class Photo {
 	 * @throws UnhandledFormatException, si le format du fichier ne correspond aux formats pris en charge
 	 * @throws WrongFileException, si le fichier ne se trouve pas au bon endroit
 	 */
+	
 	public void verificationFichier(File f) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
 		if(!f.exists()) {
-			PhotoNotFoundException e = new PhotoNotFoundException(nom, "Photo inexistante");
+			PhotoNotFoundException e = new PhotoNotFoundException(f.getName(), "Photo inexistante");
 			throw e;
 		}
 		
@@ -101,18 +80,20 @@ public class Photo {
 		}
 	}
 	
-	/**
-	 * Change le nom de la photo
-	 * @param nom 	Le nouveau nom de la photo
-	 */
+	public boolean equals(Object o){
+		Photo p = null;
+		if(o instanceof Photo){
+			p = (Photo)o;
+		}
+		if(this.nom.equals(p.nom) && this.date.equals(p.date))
+			return true;
+		
+	return false;
+	}
+	
 	public void setNom(String nom){
 		this.nom = nom;
 	}
-	
-	/**
-	 * Permet d'afficher la photo sous la forme d'une chaîne de caractères
-	 * @return la chaîne de caractères
-	 */
 	public String toString(){
 		String s = new String("Nom de la photo : "+this.nom+" prise le "+Photo.DATEFORMAT.format(this.date.getTime()));
 		return s;

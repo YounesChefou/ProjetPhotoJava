@@ -3,108 +3,67 @@ import java.util.*;
 import java.io.*;
 import exception.*;
 
-/**
- * Classe de gestion d'un album photo évènement
- * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
- *
- */
-public class AlbumPhotoEvent {
-		//Variables d'instance
-		private String nom;			// Le nom de l'album photo évènement
-		private Event evenement;		// L'évènement de l'album photo évènement
+public class AlbumPhotoEvent extends Observable{
+		private String nom;
+		private Event evenement;
 		private ArrayList<PhotoEvent> album;
 		
-		/**
-		 * Construit une instance d'AlbumPhotoEvent avec un évènement
-		 * @param E 	L'évènement de l'album
-		 */
 		public AlbumPhotoEvent(Event E){
-			this.nom = E.getNomEvent();			// Initialise la variable d'instance nom
-			this.evenement = E;				// Initialise la variable d'instance evenement
-			this.album = new ArrayList<PhotoEvent>();	// Initialise la variable d'instance album
+			this.nom = E.getNomEvent();
+			this.evenement = E;
+			this.album = new ArrayList<PhotoEvent>();
 		}
 		
-		/**
-		 * Construit une instance d'AlbumPhotoEvent avec un nom
-		 * @param nom 	Le nom de l'évènement de l'album
-		 */
 		public AlbumPhotoEvent(String nom){
-			Event E = new Event(nom);			// Créer un évènement du nom passé en paramètre
-			this.nom = E.getNomEvent();			// Initialise la variable d'instance nom
-			this.evenement = E;				// Initialise la variable d'instance evenement
-			this.album = new ArrayList<PhotoEvent>();	// Initialise la variable d'instance album
+			Event E = new Event(nom);
+			this.nom = E.getNomEvent();
+			this.evenement = E;
+			this.album = new ArrayList<PhotoEvent>();
 		}
-		
-		/**
-		 * Retourne le nom de l'album photo évènement
-		 * @return Le nom de l'album photo évènement
-		 */
+
 		public String getNom(){
 			return this.nom;
 		}
-	
+		
 		public int getTaille() {
 			return this.album.size();
 		}
-		
+			
 		public Photo getPhotoAt(int i) {
 			return this.album.get(i);
 		}
 		
 		public void setEvent(Event ev){
-			this.evenement=ev;
-			this.setChanged();
-			this.notifyObservers(ev);
+			    this.evenement=ev;
+				this.setChanged();
+				this.notifyObservers(ev);
 		}
-		
-		/**
-		 * Retourne l'album photo évènement
-		 * @return l'album photo évènement
-		 */
 		public ArrayList<PhotoEvent> getAlbum(){
 			return this.album;
 		}
 		
-		/**
-		 * Retourne l'évènement de l'album photo évènement
-		 * @return Le l'évènement de l'album photo évènement
-		 */
 		public Event getEvent(){
 			return this.evenement;
 		}
-		
-		/**
-		 * Change le nom de l'album photo évènement
-		 * @param nom 	Le nouveau nom de l'album photo évènement
-		 */
 		public void setNom(String nom){
 			this.nom = nom;
 		}
 		
-		/**
-		 * Change les photos évènement de l'album photo évènement 
-		 * @param album 	Les nouvelles photos évènement
-		 */
 		public void setAlbum(ArrayList<PhotoEvent> album){
 			this.album = album;
 		}
 		
-		/**
-		 * Ajout d'une photo évènement dans l'album photo évènement
-		 * @param p 	La photo évènement à ajouter
-		 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
-		 */
 		public void ajouterPhoto(PhotoEvent p) throws PhotoAlreadyHereException,WrongEventException{
-			String nomAlbum = this.evenement.getNomEvent();		  
-			String evenementPhoto = p.getEvent().getNomEvent();
+ 			String nomAlbum = this.evenement.getNomEvent();		  
+ 			String evenementPhoto = p.getEvent().getNomEvent();
 			if(this.album.contains(p)) {
 				PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
 				throw r;
 			}
 			if(!nomAlbum.equals(evenementPhoto)) {
-				WrongEventException we = new WrongEventException(p.getEvent(), "Evenement non correspondant à l'album");
-				throw we;					// Lance l'exception WrongEventException si la condition du if n'est pas vérifiée
-			}
+ 				WrongEventException we = new WrongEventException(p.getEvent(), "Evenement non correspondant à l'album");
+ 				throw we;					// Lance l'exception WrongEventException si la condition du if n'est pas vérifiée
+ 			}
 			PhotoEvent g = p;
 			this.getAlbum().add(p);
 			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
@@ -113,17 +72,18 @@ public class AlbumPhotoEvent {
 		}
 	
 		public void ajouterPhotosListe(ArrayList<PhotoEvent> listePhotos){
-			this.album.addAll(listePhotos);
-			//this.setChanged();
-			//this.notifyObservers();
-		}
+			this.album.addAll(listePhotos);			
+		//this.setChanged();
+		//this.notifyObservers();
+ 		}
 		
 		public void ajouterPhotosFile(File[] files) throws PhotoAlreadyHereException{
 			PhotoEvent p;
+			String nomDossier = this.evenement.getNomEvent();
 			ArrayList<PhotoEvent> liste = new ArrayList<PhotoEvent>();
 			for (File f : files){
 				try{
-					p = new PhotoEvent("images/"+f.getName(),this.evenement);
+					p = new PhotoEvent("images/"+nomDossier+"/"+f.getName(),this.evenement);
 					if(this.album.contains(p)) {
 						PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
 						throw r;
@@ -132,30 +92,29 @@ public class AlbumPhotoEvent {
 					PhotoEtatAlbum etatPhoto = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
 					this.setChanged();
 					this.notifyObservers(etatPhoto);
+			}
+				catch(UnhandledFormatException e){
+					System.out.println(e);
+				}				
+				catch(PhotoNotFoundException ex){
+					System.out.println(ex);
 				}
-					catch(UnhandledFormatException e){
-						System.out.println(e);
-					}
-					
-					catch(PhotoNotFoundException ex){
-						System.out.println(ex);
-					}
-					
-					catch(WrongFileException exc){
-						System.out.println(exc);
-					}
+				catch(WrongFileException exc){
+					System.out.println(exc);
+				}
 			}
 			this.ajouterPhotosListe(liste);
-		
+			this.setChanged();
+			this.notifyObservers();
 		}
-		
+					
 		public void supprimerPhoto(Photo p) {
 			this.album.remove(p);
 			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
 			this.setChanged();
 			this.notifyObservers(photoEtat);
 		}
-		
+					
 		public void supprimerPhotoIndex(int i) {
 			PhotoEvent p = this.album.get(i);
 			this.album.remove(i);
@@ -163,11 +122,7 @@ public class AlbumPhotoEvent {
 			this.setChanged();
 			this.notifyObservers(photoEtat);
 		}
-	
-		/**
-		 * Permet de remplir un album photo évènement à partir d'un fichier texte
-		 * @param fichier	Le nom du fichier pour remplir l'album photo évènement
-		*/
+		
 		public void charge(String fichier){
 			
 			BufferedReader bIn = null;
@@ -238,10 +193,6 @@ public class AlbumPhotoEvent {
 			
 		}
 		
-		/**
-		 * Permet de sauvegarder dans un fichier, le nom de l'album photo évènement et le chemin des photos qui le composent.
-		 * @param fichier 	nom du fichier de sauvegarde.
-		 */
 		public void sauv(String fichier){
 			String nomEvent = this.getEvent().getNomEvent();
 			String fichierEvent = nomEvent+"Event.txt";
@@ -277,11 +228,6 @@ public class AlbumPhotoEvent {
 			
 			
 		}
-	
-		/**
-		 * Permet d'afficher l'album photo évènement sous la forme d'une chaîne de caractères
-		 * @return la chaîne de caractère
-		*/
 		public String toString(){
 			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
 			for(PhotoEvent p : this.getAlbum()){
