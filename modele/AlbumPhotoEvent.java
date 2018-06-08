@@ -42,6 +42,20 @@ public class AlbumPhotoEvent {
 		public String getNom(){
 			return this.nom;
 		}
+	
+		public int getTaille() {
+			return this.album.size();
+		}
+		
+		public Photo getPhotoAt(int i) {
+			return this.album.get(i);
+		}
+		
+		public void setEvent(Event ev){
+			this.evenement=ev;
+			this.setChanged();
+			this.notifyObservers(ev);
+		}
 		
 		/**
 		 * Retourne l'album photo évènement
@@ -80,17 +94,76 @@ public class AlbumPhotoEvent {
 		 * @param p 	La photo évènement à ajouter
 		 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
 		 */
-		public void ajouterPhoto(PhotoEvent p) throws WrongEventException{
+		public void ajouterPhoto(PhotoEvent p) throws PhotoAlreadyHereException,WrongEventException{
 			String nomAlbum = this.evenement.getNomEvent();		  
 			String evenementPhoto = p.getEvent().getNomEvent();
-			if(nomAlbum.equals(evenementPhoto))			// Test si le nom de l'album correspond au nom de l'évènement de la photo
-				this.getAlbum().add(p);				// Si la condition du if est vérifiée, on ajoute l'évènement à l'album
-			else{
+			if(this.album.contains(p)) {
+				PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
+				throw r;
+			}
+			if(!nomAlbum.equals(evenementPhoto)) {
 				WrongEventException we = new WrongEventException(p.getEvent(), "Evenement non correspondant à l'album");
 				throw we;					// Lance l'exception WrongEventException si la condition du if n'est pas vérifiée
 			}
+			PhotoEvent g = p;
+			this.getAlbum().add(p);
+			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
+			this.setChanged();
+			this.notifyObservers(photoEtat);
+		}
+	
+		public void ajouterPhotosListe(ArrayList<PhotoEvent> listePhotos){
+			this.album.addAll(listePhotos);
+			//this.setChanged();
+			//this.notifyObservers();
 		}
 		
+		public void ajouterPhotosFile(File[] files) throws PhotoAlreadyHereException{
+			PhotoEvent p;
+			ArrayList<PhotoEvent> liste = new ArrayList<PhotoEvent>();
+			for (File f : files){
+				try{
+					p = new PhotoEvent("images/"+f.getName(),this.evenement);
+					if(this.album.contains(p)) {
+						PhotoAlreadyHereException r = new PhotoAlreadyHereException(p.getNom(),"Photo Déjà existante"); 
+						throw r;
+					}
+					liste.add(p);
+					PhotoEtatAlbum etatPhoto = new PhotoEtatAlbum(this.nom,p,"photo ajoutée");
+					this.setChanged();
+					this.notifyObservers(etatPhoto);
+				}
+					catch(UnhandledFormatException e){
+						System.out.println(e);
+					}
+					
+					catch(PhotoNotFoundException ex){
+						System.out.println(ex);
+					}
+					
+					catch(WrongFileException exc){
+						System.out.println(exc);
+					}
+			}
+			this.ajouterPhotosListe(liste);
+		
+		}
+		
+		public void supprimerPhoto(Photo p) {
+			this.album.remove(p);
+			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
+			this.setChanged();
+			this.notifyObservers(photoEtat);
+		}
+		
+		public void supprimerPhotoIndex(int i) {
+			PhotoEvent p = this.album.get(i);
+			this.album.remove(i);
+			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
+			this.setChanged();
+			this.notifyObservers(photoEtat);
+		}
+	
 		/**
 		 * Permet de remplir un album photo évènement à partir d'un fichier texte
 		 * @param fichier	Le nom du fichier pour remplir l'album photo évènement
