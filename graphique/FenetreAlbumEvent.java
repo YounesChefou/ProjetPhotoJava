@@ -14,92 +14,94 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import graphique.FenetreAlbum.ChangeListener;
-import graphique.FenetreAlbum.MenuListener;
-import modele.AlbumControleur;
-import modele.AlbumControleurEvent;
-import modele.AlbumPhoto;
-import modele.AlbumPhotoEvent;
+import exception.PhotoAlreadyHereException;
+import graphique.FenetreAlbumEvent.ChangeListener;
+import graphique.FenetreAlbumEvent.MenuListener;
+import modele.*;
 
 public class FenetreAlbumEvent extends JFrame implements Observer{
-	private static final int SUIV=1,PREC=0,SUPP=2,ADD=3;
+//	private static final int SUIV=1,PREC=0,SUPP=2,ADD=3;
 	
-	private AlbumPhotoEvent al;
-	private int positionAlbum;
+	private AlbumPhotoEvent album;
 	private AlbumControleurEvent controleur;
-	private JButton suivButton;
-	private JButton precButton;
-	private LabelImage labImage;
-	private JLabel nomPhotoLab;
-	private JLabel AlbumIndexLab;
+	private JLabel labNomPhoto;
+	private LabelImage labPhotoIcon;
+	private int positionAlbum;
+	private JLabel labPositionAlbum;
+	private JButton Bprec;
+	private JButton Bsuiv;
 	
-	public FenetreAlbumEvent(String titre,int x,int y,int w,int h,AlbumPhotoEvent alb) {
-		super(titre);
-		this.al=alb;
-		this.positionAlbum=0;
-		alb.addObserver(this);
-		this.controleur = new AlbumControleurEvent(alb);
-		System.out.println("J'observe l'album photo : "+ alb.toString());	
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	
+	public FenetreAlbumEvent(int x, int y, int w, int h, AlbumPhotoEvent album){
+		super(album.getNom());
+		this.initialiseMenu();
+		this.album = album;
+		this.controleur = new AlbumControleurEvent(album);
+		album.addObserver(this);
+		this.initComposants(album.getPhotoAt(0));
 		this.setBounds(x,y,w,h);
-		this.initComposants();
 		this.setVisible(true);
 	}
 	
-	private void initComposants() {
-		this.initMenu();
-		JPanel pSud = this.creePanelSud(1,this.al.getTaille());
-		this.add(pSud,BorderLayout.SOUTH);
-		String img = this.al.getPhotoAt(0).getNom();
-		this.labImage = new LabelImage();
-		this.labImage.setImage("images/"+img);
-		this.add(this.labImage, BorderLayout.CENTER);
-		this.nomPhotoLab=new JLabel(img,SwingConstants.CENTER);
-		this.add(this.nomPhotoLab,BorderLayout.NORTH);
-		
-			
+	/**
+	 * Initialise les différents composants de la barre de menu.
+	 * 
+	 */
+	private void initialiseMenu(){
+		JMenuBar menuBar = new JMenuBar();
+		this.setJMenuBar(menuBar);
+		JMenu mdef = new JMenu("Photos");
+		menuBar.add(mdef);
+		JMenuItem mdefAjouter = new JMenuItem("Ajouter une photo");
+		JMenuItem mdefEnlever = new JMenuItem("Enlever une photo");
+		JMenuItem mdefSauv = new JMenuItem("Sauvegarder l'album");
+		mdef.add(mdefAjouter);
+		mdef.add(mdefEnlever);
+		mdef.add(mdefSauv);
+		mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
+		mdefEnlever.addActionListener(new MenuListener("Enlever une photo"));
+		mdefSauv.addActionListener(new MenuListener("Sauvegarder l'album"));
+	}
+	/**
+	 * Initialise les différents composants de la fenêtre.
+	 * @param p, la Photo qui sera affichée au lancement.
+	 */
+	public void initComposants(Photo p){
+		this.labNomPhoto = new JLabel(p.getNom(), SwingConstants.CENTER);
+		this.add(this.labNomPhoto, BorderLayout.NORTH);
+//		this.labPhotoIcon = new JLabel(new ImageIcon(p.getPath()), SwingConstants.CENTER);
+		this.labPhotoIcon = new LabelImage(p.getPath());
+		this.add(this.labPhotoIcon, BorderLayout.CENTER);
+		JPanel boutons = new JPanel();
+		this.Bprec = new JButton("<<");
+		this.Bsuiv = new JButton(">>");
+		this.positionAlbum = 1;
+		this.labPositionAlbum = new JLabel(1+"/"+this.getTaille());
+		Bprec.addActionListener(new ChangeListener("<<"));
+		Bsuiv.addActionListener(new ChangeListener(">>"));
+		Bprec.setEnabled(false);
+		boutons.add(this.Bprec);
+		boutons.add(this.Bsuiv);
+		boutons.add(labPositionAlbum);
+		this.add(boutons, BorderLayout.SOUTH);
 	}
 	
-	private void initMenu() {
-		JMenuBar jmb = new JMenuBar();
-		this.setJMenuBar(jmb);
-		JMenu set = new JMenu("PhotoSettings");
-		jmb.add(set);
-		JMenuItem ajouter = new JMenuItem("ajouter une photo");
-		JMenuItem supprimer = new JMenuItem("supprimer une photo");
-		ajouter.addActionListener(new MenuListener(ADD));
-		supprimer.addActionListener(new MenuListener(SUPP));
-		set.add(ajouter);
-		set.add(supprimer);
+	public int getTaille(){
+		return this.album.getTaille();
 	}
 	
-	private JPanel creePanelSud(int pos,int taille) {
-		JPanel pSud = new JPanel();
-		this.precButton = new JButton("preccedent");
-		this.suivButton = new JButton("suivant");
-		this.suivButton.addActionListener(new ChangeListener(SUIV));
-		this.precButton.addActionListener(new ChangeListener(PREC));
-		this.precButton.setEnabled(false);
-		pSud.add(this.precButton);
-		this.AlbumIndexLab=new JLabel(pos+"/"+(taille));
-		pSud.add(this.AlbumIndexLab);
-		pSud.add(this.suivButton);
-		return pSud;
-	}
-	
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	/**
+	 * Permet de choisir une ou plusieurs images, et renvoie un tableau avec les fichiers correspondants.
+	 * @return files, le tableau de fichiers.
+	 */
 	public File[] chooseFiles(){
 		File[] files = null;
-		String nomEvent = this.al.getEvent().getNomEvent();
+		String nomEvent = this.album.getNom();
 		JFileChooser fc = new JFileChooser("./images/"+nomEvent);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "gif","jpeg");
 		fc.setFileFilter(filter);
@@ -110,96 +112,133 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 				files = fc.getSelectedFiles();		
 	    }
 	    return files;
-}
+	}
 	
-	public void miseAjour() {
-		if(this.al.getTaille()==0) {
-			this.AlbumIndexLab.setText((this.positionAlbum+1)+"/"+(this.al.getTaille()));
-			this.labImage.setImage("");
-			this.nomPhotoLab.setText("Aucune photo dans l'album photo");
-		}
-		else {
-				this.AlbumIndexLab.setText((this.positionAlbum+1)+"/"+(this.al.getTaille()));
-				String img = this.al.getPhotoAt(this.positionAlbum).getNom();
-				this.labImage.setImage("images/"+img);
-				this.nomPhotoLab.setText(this.al.getPhotoAt(this.positionAlbum).getNom());
+	/**
+	 * Ouvre une fenêtre qui demande confirmation de la sauvegarde à l'utilisateur.
+	 */
+	public void confirmationSauv(){
+		int choix = JOptionPane.showConfirmDialog(null,"Sauvegarder l'album dans son état actuel ?", this.album.getNom(), JOptionPane.YES_NO_OPTION);
+		if(choix==JOptionPane.YES_OPTION){
+			String nomFichier = JOptionPane.showInputDialog("Entrez le nom du fichier.");
+			this.controleur.notificationSauvModele(nomFichier);
 		}
 	}
 	
-	public void activeBoutons() {
-		if(this.positionAlbum>=this.al.getTaille()-1) {
-			this.suivButton.setEnabled(false);
+	/**
+	 * Met à jour la fenêtre à chaque changement.
+	 */
+	public void miseAjour(){
+		if(this.positionAlbum==0&&this.getTaille()!=0)this.positionAlbum=1;
+		if(this.getTaille()==0){
+			this.labNomPhoto.setText("Aucune photo dans l'album.");
+			this.labPhotoIcon.setImage("");
+			this.labPhotoIcon.repaint();
+			this.labPositionAlbum.setText(this.positionAlbum+"/"+this.getTaille());
+			this.activeBoutons();
 		}
-		else {
-			this.suivButton.setEnabled(true);
-		}
-		if(this.positionAlbum<=0) {
-			this.precButton.setEnabled(false);
-		}
-		else {
-			this.precButton.setEnabled(true);
+		else{
+			Photo ph = this.album.getPhotoAt(this.positionAlbum-1);
+	//		this.labPhotoIcon.setIcon(new ImageIcon(ph.getPath()));
+			this.labPhotoIcon.setImage(ph.getPath());
+			this.labPhotoIcon.repaint();
+			this.labNomPhoto.setText(ph.getNom());
+			this.labPositionAlbum.setText(this.positionAlbum+"/"+this.getTaille());
+			this.activeBoutons();
 		}
 	}
 	
-	class ChangeListener implements ActionListener {
-		private int val;
+	/**
+	 * Active ou désactive les boutons de la fenêtre en fonction de la position de l'utilisateur dans l'album.
+	 */
+	
+	public void activeBoutons(){
+		if(this.positionAlbum==0)this.positionAlbum=1;
 		
-		public ChangeListener(int i){
-			this.val=i;
+		if(this.positionAlbum==1){
+			this.Bprec.setEnabled(false);
 		}
 		
-		public ChangeListener(){
+		if(this.positionAlbum<this.getTaille()){
+			this.Bsuiv.setEnabled(true);
 		}
+		if(this.positionAlbum<this.getTaille()&&this.positionAlbum>1){
+			this.Bprec.setEnabled(true);
+			this.Bsuiv.setEnabled(true);
+		}
+		else if(this.positionAlbum==this.getTaille()){
+			this.Bsuiv.setEnabled(false);
+			if(this.positionAlbum>1){
+				this.Bprec.setEnabled(true);
+			}
+		}
+	}
+	
+	/**
+	 * Méthode appelée à chaque fois que le modèle change. Obligatoire car la classe implémente l'interface Observer.
+	 *  @param o : l'Observer qui a  notifié un changement
+	 *  @param arg : l'objet (pour être le plus général) qui représente le changement de l'Observer
+	 */
+	
+	public void update(Observable o, Object arg) {
+		this.miseAjour();
+	}
+	
+	class ChangeListener implements ActionListener{
+		private String bouton;
 		
-		public void actionPerformed(ActionEvent e) {
-			switch(val) {
-			case SUIV :
+		public ChangeListener(String b){
+			this.bouton = b;
+		}
+		public void actionPerformed(ActionEvent e){
+			switch(this.bouton){
+			case ">>":
 				FenetreAlbumEvent.this.positionAlbum++;
-				FenetreAlbumEvent.this.activeBoutons();
-				FenetreAlbumEvent.this.precButton.setEnabled(true);
 				break;
-			case PREC :
-				FenetreAlbumEvent.this.positionAlbum=FenetreAlbumEvent.this.positionAlbum-1;
-				FenetreAlbumEvent.this.activeBoutons();
-				FenetreAlbumEvent.this.suivButton.setEnabled(true);
+			case "<<":
+				FenetreAlbumEvent.this.positionAlbum--;
 				break;
 			}
 			FenetreAlbumEvent.this.miseAjour();
-			
 		}
 	}
 	
-	class MenuListener implements ActionListener {
-		private int val;
+	class MenuListener implements ActionListener{
+		private String option;
 		
-		public MenuListener(int i) {
-			this.val=i;
+		public MenuListener(String mb){
+			this.option = mb;
 		}
 		
-		public void actionPerformed(ActionEvent e) {
-			switch(val) {
-			case ADD :
-				try {
-					File[]files = FenetreAlbumEvent.this.chooseFiles();
-					FenetreAlbumEvent.this.controleur.modifieAlbumAjoute(files);
-					FenetreAlbumEvent.this.activeBoutons();
+		public void actionPerformed(ActionEvent e){
+			int pos = FenetreAlbumEvent.this.positionAlbum;
+			int taille = FenetreAlbumEvent.this.getTaille();
+			Photo ph = null;
+			switch(this.option){
+			case "Ajouter une photo":
+				File[]files = FenetreAlbumEvent.this.chooseFiles();
+				try{
+					FenetreAlbumEvent.this.controleur.notificationAjoutModele(files);
 				}
-				finally {
-					break;
+				catch(PhotoAlreadyHereException excep){
+					System.out.println(excep);
 				}
-			case SUPP :
-				if(FenetreAlbumEvent.this.positionAlbum>=FenetreAlbumEvent.this.al.getTaille()-1) {
-					FenetreAlbumEvent.this.positionAlbum=FenetreAlbumEvent.this.positionAlbum-1;
-					FenetreAlbumEvent.this.controleur.modifieAlbumDel(FenetreAlbumEvent.this.al.getPhotoAt(FenetreAlbumEvent.this.positionAlbum+1));
+				break;
+			case "Enlever une photo":
+				if(pos<taille&&pos>=1){
+					ph = FenetreAlbumEvent.this.album.getPhotoAt(pos-1);
+					FenetreAlbumEvent.this.controleur.notificationDelModele(ph);
 				}
-
-				else {
-					FenetreAlbumEvent.this.controleur.modifieAlbumDel(FenetreAlbumEvent.this.al.getPhotoAt(FenetreAlbumEvent.this.positionAlbum));
+				else if(pos>=taille-1){
+					FenetreAlbumEvent.this.positionAlbum--;
+					ph = FenetreAlbumEvent.this.album.getPhotoAt(taille-1);
+					FenetreAlbumEvent.this.controleur.notificationDelModele(ph);
 				}
-
-				
-				break;	
-			}
+				break;
+			case "Sauvegarder l'album":
+				FenetreAlbumEvent.this.confirmationSauv();
+				break;
+			}	
 		}
 	}
 

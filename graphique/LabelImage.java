@@ -1,5 +1,6 @@
 package graphique;
 import java.awt.*;
+import java.util.StringTokenizer;
 
 import javax.swing.*;
 
@@ -52,6 +53,13 @@ public class LabelImage extends JLabel{
 		return icon.getIconHeight();
 	}
 	
+	public boolean imageEstGif(){
+		String ext =null;
+		StringTokenizer s = new StringTokenizer(this.nomIm,".");
+		while(s.hasMoreTokens())
+			ext = s.nextToken();
+		return ext.equals("gif");
+	}
 	/**
 	 * Affiche l'image dans la fenêtre.
 	 * @param g
