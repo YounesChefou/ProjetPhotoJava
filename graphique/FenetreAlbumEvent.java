@@ -59,12 +59,21 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		menuBar.add(mdef);
 		JMenuItem mdefAjouter = new JMenuItem("Ajouter une photo");
 		JMenuItem mdefEnlever = new JMenuItem("Enlever une photo");
+		JMenuItem mdefAjouterPers = new JMenuItem("Ajouter une personne");
+		JMenuItem mdefEnleverPers = new JMenuItem("Enlever une personne");
+		JMenuItem mdefTrier = new JMenuItem("Trier l'album par date");
 		JMenuItem mdefSauv = new JMenuItem("Sauvegarder l'album");
 		mdef.add(mdefAjouter);
 		mdef.add(mdefEnlever);
+		mdef.add(mdefAjouterPers);
+		mdef.add(mdefEnleverPers);
+		mdef.add(mdefTrier);
 		mdef.add(mdefSauv);
 		mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
 		mdefEnlever.addActionListener(new MenuListener("Enlever une photo"));
+		mdefAjouterPers.addActionListener(new MenuListener("Ajouter une personne"));
+		mdefEnleverPers.addActionListener(new MenuListener("Enlever une personne"));
+		mdefTrier.addActionListener(new MenuListener("Trier l'album par date"));
 		mdefSauv.addActionListener(new MenuListener("Sauvegarder l'album"));
 	}
 	/**
@@ -235,10 +244,16 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 					FenetreAlbumEvent.this.controleur.notificationDelModele(ph);
 				}
 				break;
+			case "Ajouter une personne":
+				break;
+			case "Enlever une personne":
+				break;
+			case "Trier l'album par date":
+				break;
 			case "Sauvegarder l'album":
 				FenetreAlbumEvent.this.confirmationSauv();
 				break;
-			}	
+			}
 		}
 	}
 
