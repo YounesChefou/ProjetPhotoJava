@@ -1,0 +1,3 @@
+Event: mariageTotoEvent.txt
+AlbumEvent: mariageToto
+images/mariageToto/bande.jpeg

@@ -1,0 +1,5 @@
+Album: Steroids
+images/Soleil.gif
+images/Saturne.gif
+images/Neptune.gif
+images/Terre.gif
