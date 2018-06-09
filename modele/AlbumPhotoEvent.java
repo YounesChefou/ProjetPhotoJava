@@ -102,6 +102,9 @@ public class AlbumPhotoEvent extends Observable{
 				catch(WrongFileException exc){
 					System.out.println(exc);
 				}
+				catch(PhotoAlreadyHereException et){
+					System.out.println(et);
+				}
 			}
 			this.ajouterPhotosListe(liste);
 			this.setChanged();
@@ -142,8 +145,8 @@ public class AlbumPhotoEvent extends Observable{
 				this.evenement.charge(fichierEvent);
 				ligne = bIn.readLine();
 				StringTokenizer st1 = new StringTokenizer(ligne, ": ");
-				while(st.hasMoreTokens()){
-					nom = st.nextToken();
+				while(st1.hasMoreTokens()){
+					nom = st1.nextToken();
 				}
 				this.setNom(nom);
 				ligne = bIn.readLine();
@@ -207,7 +210,7 @@ public class AlbumPhotoEvent extends Observable{
 				bOut.newLine();
 				
 				for(PhotoEvent ab : album){
-						bOut.write(ab.getEvent().getNomEvent() + "/" + ab.getNom());
+						bOut.write("images/"+ab.getEvent().getNomEvent() + "/" + ab.getNom());
 						bOut.newLine();
 					}
 				}
