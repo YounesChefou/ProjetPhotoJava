@@ -124,6 +124,27 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 	}
 	
 	/**
+	*Ouvre une fenetre qui demande a l'utilisateur de ce s'identifier
+	*/
+	
+	public void confirmationAjoutPers() {
+		JLabel labelLogin = new JLabel("ID:");
+		JTextField login = new JTextField();
+
+		JLabel labelPassword = new JLabel("Mot de passe:");
+		JPasswordField password = new JPasswordField();
+
+		Object[] array = { labelLogin,  login, labelPassword, password };
+
+		int res = JOptionPane.showConfirmDialog(null, array, "Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+		if (res == JOptionPane.OK_OPTION) {
+	    		System.out.println("ID: " + login.getText().trim());
+	    		System.out.println("Mot de passe: " + new String(password.getPassword()));
+		}
+	}
+	
+	/**
 	 * Ouvre une fenêtre qui demande confirmation de la sauvegarde à l'utilisateur.
 	 */
 	public void confirmationSauv(){
