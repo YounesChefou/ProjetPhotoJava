@@ -19,7 +19,7 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			super(album.getNom());
 			this.initialiseMenu();
 			this.album = al;
-			album.addObserver(this);
+			al.addObserver(this);
 			this.controleur = new AlbumControleur(album);
 			this.initialiseComposants();
 			this.setBounds(x,y,w,h);
