@@ -1,6 +1,8 @@
 package exception;
 import modele.*;
-
+/**
+ * Classe décrivant l'exception lancée quand l'évènement d'une photoEvent ne correpond pas à l'événement de l'albumPhotoEvent dans lequel on veut l'ajouter.
+ */
 public class WrongEventException extends Exception{
 	private String evenement;
 	
