@@ -71,10 +71,10 @@ public class FenetreAlbum extends JFrame implements Observer{
 		this.Bprec = new JButton("<<");
 		this.Bsuiv = new JButton(">>");
 		this.positionAlbum = 1;
-		this.labPositionAlbum = new JLabel(1+"/"+this.getTaille());
+		this.labPositionAlbum = new JLabel(this.positionAlbum+"/"+this.getTaille());
 		Bprec.addActionListener(new ChangeListener("<<"));
 		Bsuiv.addActionListener(new ChangeListener(">>"));
-		Bprec.setEnabled(false);
+		this.activeBoutons();
 		boutons.add(this.Bprec);
 		boutons.add(this.Bsuiv);
 		boutons.add(labPositionAlbum);
@@ -114,6 +114,7 @@ public class FenetreAlbum extends JFrame implements Observer{
 		}
 	}
 	
+
 	/**
 	 * Met à jour la fenêtre à chaque changement.
 	 */

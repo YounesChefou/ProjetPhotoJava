@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,7 +17,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -58,25 +58,28 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		JMenu mdef = new JMenu("Photos");
+		JMenu mEvent = new JMenu("Event");
 		menuBar.add(mdef);
 		JMenuItem mdefAjouter = new JMenuItem("Ajouter une photo");
 		JMenuItem mdefEnlever = new JMenuItem("Enlever une photo");
-		JMenuItem mdefAjouterPers = new JMenuItem("Ajouter une personne");
-		JMenuItem mdefEnleverPers = new JMenuItem("Enlever une personne");
 		JMenuItem mdefTrier = new JMenuItem("Trier l'album par date");
 		JMenuItem mdefSauv = new JMenuItem("Sauvegarder l'album");
 		mdef.add(mdefAjouter);
 		mdef.add(mdefEnlever);
-		mdef.add(mdefAjouterPers);
-		mdef.add(mdefEnleverPers);
 		mdef.add(mdefTrier);
 		mdef.add(mdefSauv);
 		mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
 		mdefEnlever.addActionListener(new MenuListener("Enlever une photo"));
-		mdefAjouterPers.addActionListener(new MenuListener("Ajouter une personne"));
-		mdefEnleverPers.addActionListener(new MenuListener("Enlever une personne"));
 		mdefTrier.addActionListener(new MenuListener("Trier l'album par date"));
 		mdefSauv.addActionListener(new MenuListener("Sauvegarder l'album"));
+		/* Menu Event */
+		menuBar.add(mEvent);
+		JMenuItem mEventAjouterPers = new JMenuItem("Ajouter une personne");
+		JMenuItem mEventEnleverPers = new JMenuItem("Enlever une personne");
+		mEvent.add(mEventAjouterPers);
+		mEvent.add(mEventEnleverPers);
+		mEventAjouterPers.addActionListener(new MenuListener("Ajouter une personne"));
+		mEventEnleverPers.addActionListener(new MenuListener("Enlever une personne"));
 	}
 	/**
 	 * Initialise les différents composants de la fenêtre.
@@ -92,10 +95,10 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		this.Bprec = new JButton("<<");
 		this.Bsuiv = new JButton(">>");
 		this.positionAlbum = 1;
-		this.labPositionAlbum = new JLabel(1+"/"+this.getTaille());
+		this.labPositionAlbum = new JLabel(this.positionAlbum+"/"+this.getTaille());
 		Bprec.addActionListener(new ChangeListener("<<"));
 		Bsuiv.addActionListener(new ChangeListener(">>"));
-		Bprec.setEnabled(false);
+		this.activeBoutons();
 		boutons.add(this.Bprec);
 		boutons.add(this.Bsuiv);
 		boutons.add(labPositionAlbum);
@@ -126,27 +129,6 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 	}
 	
 	/**
-	*Ouvre une fenetre qui demande a l'utilisateur de ce s'identifier
-	*/
-	
-	public void confirmationAjoutPers() {
-		JLabel labelLogin = new JLabel("ID:");
-		JTextField login = new JTextField();
-
-		JLabel labelPassword = new JLabel("Mot de passe:");
-		JPasswordField password = new JPasswordField();
-
-		Object[] array = { labelLogin,  login, labelPassword, password };
-
-		int res = JOptionPane.showConfirmDialog(null, array, "Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-		if (res == JOptionPane.OK_OPTION) {
-	    		System.out.println("ID: " + login.getText().trim());
-	    		System.out.println("Mot de passe: " + new String(password.getPassword()));
-		}
-	}
-	
-	/**
 	 * Ouvre une fenêtre qui demande confirmation de la sauvegarde à l'utilisateur.
 	 */
 	public void confirmationSauv(){
@@ -157,6 +139,40 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		}
 	}
 	
+	/**
+	*Ouvre une fenetre qui demande le nom et l'adresse mail de la personne à ajouter
+	*/
+	
+	public void confirmationAjoutPers() {
+		JLabel labelnomPers = new JLabel("Nom");
+		JTextField nomPers = new JTextField();
+
+		JLabel labelAdresseMail = new JLabel("Adresse mail");
+		JTextField adrMail = new JTextField();
+
+		Object[] infos = { labelnomPers, nomPers, labelAdresseMail, adrMail };
+
+		int res = JOptionPane.showConfirmDialog(null, infos, "Ajouter une personne", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+		if (res == JOptionPane.OK_OPTION) {
+	    		this.controleur.notificationAjoutPersonne(nomPers.getText(), adrMail.getText());
+		}
+	}
+	
+	/**
+	 * Ouvre une fenetre permettant de selectionner la personne à retirer de l'evenement
+	 */
+	
+	public void confirmationDelPers(){
+		ArrayList<Personne> lPers = this.album.getEvent().getListe();
+		Personne[]liste = new Personne[lPers.size()];
+		liste = lPers.toArray(liste);
+		Personne p = (Personne)JOptionPane.showInputDialog(null,
+				"Selectionner la personne à retirer","",
+				JOptionPane.QUESTION_MESSAGE, null, liste,null);
+		this.controleur.notificationDelPers(p);
+//		Cat selectedCat = (Cat)JOptionPane.showInputDialog(appFrame, "title", JOptionPane.QUESTION_MESSAGE, null, allCatsArray, null);
+	}
 	/**
 	 * Met à jour la fenêtre à chaque changement.
 	 */
@@ -268,8 +284,10 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 				}
 				break;
 			case "Ajouter une personne":
+				FenetreAlbumEvent.this.confirmationAjoutPers();
 				break;
 			case "Enlever une personne":
+				FenetreAlbumEvent.this.confirmationDelPers();
 				break;
 			case "Trier l'album par date":
 				break;
