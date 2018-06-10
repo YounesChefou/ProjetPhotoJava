@@ -1,0 +1,5 @@
+Notre projet d'album photo a pour originalité de pouvoir trier les photos par leur date de dernière modification. 
+Nous avons aussi intégré un jeu qui permet de faire deviner a l'utilisateur si la photo qui apparaît à la fenêtre,
+fait partie de l'album mariage ou planètes.
+Lorsque l'utilisateur choisit le bon album une fenetre s'ouvre, le félicitant d'avoir trouvé le bon album.
+Mais si l'utilisateur se trompe, une fenêtre s'ouvre et à la possibilité de ressayer ou de quitter avec le bouton "Quitter".
