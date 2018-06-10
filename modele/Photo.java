@@ -5,7 +5,7 @@ import java.text.*;
 import java.io.*;
 import exception.*;
 
-public class Photo implements Comparable{
+public class Photo implements Comparable<Photo>{
 	public static SimpleDateFormat DATEFORMAT;
 	
 	static{
@@ -51,16 +51,10 @@ public class Photo implements Comparable{
 	
 	/**
 	 * Compare les dates de deux photos
-	 * @return 
+	 * @return -1 si this.date est inférieur à  p, 0 si this.date est égal à  p, 1 si this.date est superieur à  p
 	 */
-	public int compareTo(Object o) {
-		int res = 0;
-		if(o instanceof Photo) {
-			Photo p = (Photo)o;
-			return this.date.compareTo(p.date);
-		}
-		return res;
-		
+	public int compareTo(Photo p) {
+			return this.date.compareTo(p.date);		
 	}
 	
 	/**
