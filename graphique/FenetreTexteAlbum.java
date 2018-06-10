@@ -17,7 +17,6 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 		
 		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto al){
 			super(al.getNom());
-			this.initialiseMenu();
 			this.album = al;
 			al.addObserver(this);
 			this.controleur = new AlbumControleur(album);
@@ -33,22 +32,6 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 		private void initialiseComposants(){
 			this.liste = new JTextArea(this.album.toString());
 			this.add(liste, BorderLayout.CENTER);
-		}
-	
-		/**
-		* Initialise les différents composants du Menu.
-	 	*/
-		private void initialiseMenu(){
-			JMenuBar menuBar = new JMenuBar();
-			this.setJMenuBar(menuBar);
-			JMenu mdef = new JMenu("Photos");
-			menuBar.add(mdef);
-			JMenuItem mdefAjouter = new JMenuItem("Ajouter une photo");
-			JMenuItem mdefEnlever = new JMenuItem("Enlever une photo");
-			mdef.add(mdefAjouter);
-			mdef.add(mdefEnlever);
-			mdefAjouter.addActionListener(new MenuListener("Ajouter une photo"));
-			mdefAjouter.addActionListener(new MenuListener("Enlever une photo"));
 		}
 	
 		/**
@@ -72,50 +55,4 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 		}
 		
 	}
-		
-		/**
-		* Methode qui permet de retourner le .
-	 	* @return l'album photo.
-	 	*/
-		public AlbumPhoto getAlbum(){
-			return this.album;
-		}
-	
-		/**
-		* .
-	 	*/
-		
-		public void menuFrame(){
-			this.liste.setText(this.album.toString());
-		}
-	
-		/**
-		* Classe qui permet d'ajouter ou de retirer des photos grace a la barre de menu du ficher text.
-	 	*/
-		
-		class MenuListener implements ActionListener{
-			private String menubar;
-			
-			public MenuListener(String mb){
-				this.menubar = mb;
-			}
-			
-			public void actionPerformed(ActionEvent e){
-				Photo p = null;
-				switch(this.menubar){
-				case "Ajouter une photo":
-					try {
-						p = new Photo("images/franku.jpg");
-						} 
-					catch (Exception e1) {
-						System.out.println(e1);
-						}
-					FenetreTexteAlbum.this.album.ajouterPhoto(p);
-					break;
-				case "Enlever une photo":
-					break;
-				}
-			FenetreTexteAlbum.this.menuFrame();
-			}
-		}
 }
