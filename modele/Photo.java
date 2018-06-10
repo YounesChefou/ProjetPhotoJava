@@ -80,6 +80,10 @@ public class Photo {
 		}
 	}
 	
+	/**
+	* Permet de determiner si deux instances Photo sont identiques
+	* @return true si oui, false sinon
+	*/
 	public boolean equals(Object o){
 		Photo p = null;
 		if(o instanceof Photo){
