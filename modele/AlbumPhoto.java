@@ -24,6 +24,15 @@ public class AlbumPhoto extends Observable{
 		return this.album.get(i);
 	}
 	
+	/**
+	 * Trie les les photos de l'album par date
+	 */
+	public void trierParDate() {
+		Collections.sort(this.album);
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	public Photo getPhotoByName(String nom) throws PhotoNotFoundException{
 		for(Photo p : this.album){
 			if(p.getNom().equals(nom))
