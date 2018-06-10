@@ -3,7 +3,7 @@ package modele;
 /**
  * Classe 
  * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
- *
+ * Classe dont l'instance permet de définir l'etat d'une photo dans un album(ex: si celle-ci vient d'être ajoutée/supprimée)
  */
 public class PhotoEtatAlbum {
 	// Variables d'instances
