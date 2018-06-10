@@ -15,10 +15,10 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 		private AlbumControleur controleur;
 		private JTextArea  liste;
 		
-		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto album){
+		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto al){
 			super(album.getNom());
 			this.initialiseMenu();
-			this.album = album;
+			this.album = al;
 			album.addObserver(this);
 			this.controleur = new AlbumControleur(album);
 			this.initialiseComposants();
