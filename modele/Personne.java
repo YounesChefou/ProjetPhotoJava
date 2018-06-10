@@ -1,46 +1,46 @@
 package modele;
 
-/**
- * Classe de gestion de personnes
- * @author Younes Cheffou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
- *
- */
+
 public class Personne {
-	// Variables d'instance
-	private String nom;		// Le nom de la personne
-	private String mail;		// Le mail de la personne
+	private String nom;
+	private String mail;
 	
-	/**
-	 * Construit une instance de Personne
-	 * @param nom 	Le nom de la personne
-	 * @param mail 	Le mail de la personne
-	 */
 	public Personne(String nom, String mail){
-		this.nom = nom;		// Initialise la variable d'instance nom
-		this.mail = mail;	// Initialise la variable d'instance mail
+		this.nom = nom;
+		this.mail = mail;
 	}
 	
 	/**
-	 * Retourne le nom de la personne
-	 * @return le nom dela personne
+	 * Permet de récupérer le nom de la personne.
+	 * @return this.nom, le nom
 	 */
 	public String getNom(){
 		return this.nom;
 	}
 	
 	/**
-	 * Retourne le mail de la personne
-	 * @return le mail de la personne
+	 * Permet de récupérer l'adresse mail de la personne
+	 * @return this.mail, l'adresse mail.
 	 */
 	public String getMail(){
 		return this.mail;
 	}
 	
 	/**
-	 * Permet d'afficher la personne sous la forme d'une chaîne de caractères
-	 * @return la chaîne de caractères
-	*/
+	 * Verifie si deux instances de Personne ont le même nom et la même adresse mail.
+	 * @return true si les deux personnes sont identiques, false sinon
+	 */
+	public boolean equals(Object o){
+		Personne p = null;
+		if(o instanceof Personne) p = (Personne)o;
+		if(this.nom.equals(p.getNom())&&this.mail.equals(p.getMail())) return true;
+		return false;
+	}
+	
+	/**
+	 * Renvoie une chaine de caractères décrivant la personne
+	 */
 	public String toString(){
-		return new String("Nom : "+this.nom+"\nMail : "+this.mail);
+		return new String(this.nom+"("+this.mail+")");
 	}
 }

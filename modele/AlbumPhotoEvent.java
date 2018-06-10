@@ -126,6 +126,28 @@ public class AlbumPhotoEvent extends Observable{
 			this.notifyObservers(photoEtat);
 		}
 		
+		public void ajouterPersonne(String nom, String mail){
+			this.evenement.ajouterPersonne(new Personne(nom,mail));
+			this.setChanged();
+			this.notifyObservers();
+		}
+		
+		/**
+		 * Ajoute une personne à l'evenement lié à l'album.
+		 * @param p, la personne à rajouter.
+		 */
+		public void supprimerPersonne(Personne p){
+			this.evenement.supprimerPersonne(p);
+			this.setChanged();
+			this.notifyObservers();
+		}
+		
+		/**
+		 * Charge les données d'un album grâce à un fichier texte comportant : le nom du fichier texte avec les données de l'evenement, le nom de l'album 
+		 * puis le chemin des photos à rajouter
+		 * @param fichier, le nom du fichier
+		 */
+		
 		public void charge(String fichier){
 			
 			BufferedReader bIn = null;
@@ -196,6 +218,10 @@ public class AlbumPhotoEvent extends Observable{
 			
 		}
 		
+		/**
+		 * Permet de sauvegarder dans un fichier texte les informations concernant l'album afin de le recharger ultérieurement.
+		 * @param fichier
+		 */
 		public void sauv(String fichier){
 			String nomEvent = this.getEvent().getNomEvent();
 			String fichierEvent = nomEvent+"Event.txt";

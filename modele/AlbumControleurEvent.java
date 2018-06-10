@@ -15,13 +15,18 @@ private AlbumPhotoEvent modele;
 		this.modele.ajouterPhotosFile(files);
 	}
 	
-	
+	public void notificationAjoutPersonne(String nom, String mail){
+		this.modele.ajouterPersonne(nom,mail);
+	}
 	public void notificationSauvModele(String nomFichier){
 		this.modele.sauv(nomFichier);
 	}
 	
 	public void notificationDelModele(Photo photo) {
 		this.modele.supprimerPhoto(photo);
-		}
-
+	}
+	
+	public void notificationDelPers(Personne p) {
+		this.modele.supprimerPersonne(p);
+	}
 }
