@@ -1,6 +1,7 @@
 package exception;
-
-
+/**
+ * Classe décrivant l'exception lancée quand la photo ne se trouve pas dans le bon répertoire.
+ */
 public class WrongFileException extends Exception{
 private String nom;
 	
