@@ -1,6 +1,7 @@
 package exception;
-
-
+/**
+ * Classe décrivant l'exception lancée quand une photo n'a pas le format souhaité.
+ */
 public class UnhandledFormatException extends Exception{
 	private String nom;
 	
