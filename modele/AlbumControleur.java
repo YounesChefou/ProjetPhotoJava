@@ -1,7 +1,8 @@
 package modele;
-
 import java.io.File;
-
+/**
+* Classe décrivant le contrôleur entre un AlbumPhoto et ses vues
+*/
 public class AlbumControleur {
 	private AlbumPhoto modele;
 	
