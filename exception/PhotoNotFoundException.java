@@ -1,5 +1,7 @@
 package exception;
-
+/**
+ * Classe décrivant l'exception lancée quand une photo n'existe pas.
+ */
 
 public class PhotoNotFoundException extends Exception{
 	private String nom;
