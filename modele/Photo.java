@@ -5,7 +5,7 @@ import java.text.*;
 import java.io.*;
 import exception.*;
 
-public class Photo {
+public class Photo implements Comparable{
 	public static SimpleDateFormat DATEFORMAT;
 	
 	static{
@@ -47,6 +47,20 @@ public class Photo {
 	 */
 	public GregorianCalendar getDate(){
 		return this.date;
+	}
+	
+	/**
+	 * Compare les dates de deux photos
+	 * @return 
+	 */
+	public int compareTo(Object o) {
+		int res = 0;
+		if(o instanceof Photo) {
+			Photo p = (Photo)o;
+			return this.date.compareTo(p.date);
+		}
+		return res;
+		
 	}
 	
 	/**
