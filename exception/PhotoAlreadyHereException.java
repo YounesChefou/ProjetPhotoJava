@@ -1,4 +1,7 @@
 package exception;
+/**
+ * Classe décrivant l'exception lancée quand une même photo apparait plusieurs fois dans un album.
+ */
 
 public class PhotoAlreadyHereException extends Exception {
 	private String nom;
