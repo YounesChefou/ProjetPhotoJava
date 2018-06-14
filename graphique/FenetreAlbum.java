@@ -13,6 +13,10 @@ import exception.PhotoAlreadyHereException;
 import graphique.FenetreAlbumEvent.MenuListener;
 import modele.*;
 
+/**
+ * Classe d'interface graphique pour un album photo lié à un evenement.
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ */
 public class FenetreAlbum extends JFrame implements Observer{
 	private AlbumPhoto album;
 	private AlbumControleur controleur;
@@ -31,6 +35,7 @@ public class FenetreAlbum extends JFrame implements Observer{
 		this.controleur = new AlbumControleur(album);
 		album.addObserver(this);
 		this.initComposants(album.getPhotoAt(0));
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setBounds(x,y,w,h);
 		this.setVisible(true);
 	}
@@ -64,7 +69,6 @@ public class FenetreAlbum extends JFrame implements Observer{
 	public void initComposants(Photo p){
 		this.labNomPhoto = new JLabel(p.getNom(), SwingConstants.CENTER);
 		this.add(this.labNomPhoto, BorderLayout.NORTH);
-//		this.labPhotoIcon = new JLabel(new ImageIcon(p.getPath()), SwingConstants.CENTER);
 		this.labPhotoIcon = new LabelImage(p.getPath());
 		this.add(this.labPhotoIcon, BorderLayout.CENTER);
 		JPanel boutons = new JPanel();
@@ -224,6 +228,9 @@ public class FenetreAlbum extends JFrame implements Observer{
 					ph = FenetreAlbum.this.album.getPhotoAt(taille-1);
 					FenetreAlbum.this.controleur.notificationDelModele(ph);
 				}
+				break;
+			case "Trier l'album par date":
+				FenetreAlbum.this.controleur.notificationTriModele();
 				break;
 			case "Sauvegarder l'album":
 				FenetreAlbum.this.confirmationSauv();

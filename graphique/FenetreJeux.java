@@ -10,7 +10,7 @@ import java.awt.event.*;
 import java.util.*;
 
 /**
- * Classe de gestion d'une fenetre de jeu, permettant de retrouver l'évènement correspondant à une photo
+ * Classe de gestion d'une fenetre de jeu, permettant de retrouver l'ï¿½vï¿½nement correspondant ï¿½ une photo
  * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
  *
  */
@@ -26,12 +26,12 @@ public class FenetreJeux extends JFrame{
 	/**
 	 * Construit une instance de FenetreJeux
 	 * @throws PhotoNotFoundException Si la photo n'existe pas
-	 * @throws UnhandledFormatException Si la photo évènement a le mauvais format
+	 * @throws UnhandledFormatException Si la photo ï¿½vï¿½nement a le mauvais format
 	 * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
-	 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
+	 * @throws WrongEventException Si l'ï¿½vï¿½nement ne correspond pas ï¿½ l'album ï¿½vï¿½nement
 	 */
 	public FenetreJeux() throws PhotoNotFoundException, UnhandledFormatException, WrongFileException, WrongEventException {
-		super("Trouver l'évènement");
+		super("Trouver l'Ã©venement");
 		photoAleatoire = choixPhotoHasard(choixAlbumHasard());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.initComposants();
@@ -49,10 +49,10 @@ public class FenetreJeux extends JFrame{
 	
 	/**
 	 * Permet d'initialiser des composants dans l'instance FenetreJeux
-	 * @param pe La photo évènement choise préalablement au hasard
+	 * @param pe La photo Ã©venement choise prï¿½alablement au hasard
 	 */
 	public void initComposants() {
-		this.add(new JLabel("Trouver l'évènement correspondant à cette photo :", SwingConstants.CENTER), BorderLayout.NORTH);
+		this.add(new JLabel("Trouver l'Ã©venement correspondant Ã  cette photo :", SwingConstants.CENTER), BorderLayout.NORTH);
 		this.image = new JLabel((new ImageIcon(this.photoAleatoire.getPath())));
 		this.add(this.image, BorderLayout.CENTER);
 		JPanel pSud = this.creePanelSud();
@@ -61,14 +61,14 @@ public class FenetreJeux extends JFrame{
 	}
 	
 	/**
-	 * Permet de créer un panel qui se positionnera au Sud dans l'instance de FenetreJeux
-	 * @return Le panel crée
+	 * Permet de crÃ©er un panel qui se positionnera au Sud dans l'instance de FenetreJeux
+	 * @return Le panel crï¿½e
 	 */
 	public JPanel creePanelSud() {
 
 		JPanel pSud = new JPanel();
 		
-		JLabel lab1 = new JLabel("Votre réponse : ");
+		JLabel lab1 = new JLabel("Votre rÃ©ponse : ");
 		pSud.add(lab1);
 		
 		reponse = new JComboBox(abEvent);
@@ -89,8 +89,8 @@ public class FenetreJeux extends JFrame{
 	}
 	
 	/**
-	 * Choisit un album évènement aléatoirement dans le tableau static abEvent
-	 * @return L'album choisit aléatoirement
+	 * Choisit un album Ã©venement alÃ©atoirement dans le tableau static abEvent
+	 * @return L'album choisit alÃ©atoirement
 	 */
 	public String choixAlbumHasard() {
 		String choix;
@@ -99,13 +99,13 @@ public class FenetreJeux extends JFrame{
 	}
 	
 	/**
-	 * Choisie une photo au hasard parmis les photos de l'album évènement
-	 * @param nom 	le nom de l'évènement où la photo sera choisie
+	 * Choisie une photo au hasard parmis les photos de l'album Ã©venement
+	 * @param nom 	le nom de l'Ã©venement oÃ¹ la photo sera choisie
 	 * @return la photo choisie au hasard
 	 * @throws PhotoNotFoundException Si la photo n'existe pas
-	 * @throws UnhandledFormatException Si la photo évènement a le mauvais format
+	 * @throws UnhandledFormatException Si la photo ï¿½vï¿½nement a le mauvais format
 	 * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
-	 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
+	 * @throws WrongEventException Si l'ï¿½vï¿½nement ne correspond pas ï¿½ l'album ï¿½vï¿½nement
 	 */
 	public PhotoEvent choixPhotoHasard(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException, WrongEventException {
 		Event event = new Event(nom);
@@ -118,7 +118,7 @@ public class FenetreJeux extends JFrame{
 			this.abPhoto.add(new PhotoEvent("images/mariage/gateau.jpg", event));
 			this.abPhoto.add(new PhotoEvent("images/mariage/fete.jpg", event));
 			this.albumAleatoire.setAlbum(this.abPhoto);
-			return this.albumAleatoire.getPhotoAt((int)(this.albumAleatoire.getTaille()*Math.random())); 
+			return (PhotoEvent)this.albumAleatoire.getPhotoAt((int)(this.albumAleatoire.getTaille()*Math.random())); 
 
 			
 		case "planetes":
@@ -130,14 +130,14 @@ public class FenetreJeux extends JFrame{
 			this.abPhoto.add(new PhotoEvent("images/planetes/mars.gif", event));
 			this.abPhoto.add(new PhotoEvent("images/planetes/jupiter.gif", event));
 			this.albumAleatoire.setAlbum(this.abPhoto);
-			return this.albumAleatoire.getPhotoAt((int)(this.albumAleatoire.getTaille()*Math.random()));
+			return (PhotoEvent)this.albumAleatoire.getPhotoAt((int)(this.albumAleatoire.getTaille()*Math.random()));
 
 		default : return (new PhotoEvent("images/planetes/terre.gif", event));
 		}
 	}
 	
 	/**
-	 * Vérifie si la reponse choisie correspond à l'évènement de la photo
+	 * Vï¿½rifie si la reponse choisie correspond ï¿½ l'ï¿½vï¿½nement de la photo
 	 * @return true si les deux correspondent, et false sinon
 	 */
 	public boolean verificationChoix() {
@@ -147,19 +147,19 @@ public class FenetreJeux extends JFrame{
 	}
 	
 	/**
-	 * Créée une fenêtre affichant le résulat avec possibilité de réessayer ou de quitter
-	 * @param b true signifie que l'utilisateur a gagné, et false signifie qu'il a perdu
+	 * Crï¿½ï¿½e une fenï¿½tre affichant le rï¿½sulat avec possibilitï¿½ de rï¿½essayer ou de quitter
+	 * @param b true signifie que l'utilisateur a gagnï¿½, et false signifie qu'il a perdu
 	 */
 	public void fenetreResultat(boolean b) {
 		
-			this.frame = new JFrame("Résultat");
+			this.frame = new JFrame("Rï¿½sultat");
 			this.frame.setLocationRelativeTo(null);
 			this.frame.setSize(200, 200);
 			this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			this.frame.setVisible(true);
 			
 			JPanel pSud = new JPanel();
-			JButton reessayer = new JButton("Réessayer");
+			JButton reessayer = new JButton("Rï¿½essayer");
 			reessayer.setBackground(Color.LIGHT_GRAY);
 			reessayer.setForeground(Color.RED);
 			
@@ -176,7 +176,7 @@ public class FenetreJeux extends JFrame{
 			quitter.addActionListener(new TryQuitListener("quitter"));
 			
 		if (b) {
-			this.frame.add(new JLabel("Vous avez Gagné", SwingConstants.CENTER), BorderLayout.CENTER);
+			this.frame.add(new JLabel("Vous avez Gagnï¿½", SwingConstants.CENTER), BorderLayout.CENTER);
 		}
 		else {
 			this.frame.add(new JLabel("Vous avez Perdu", SwingConstants.CENTER), BorderLayout.CENTER);
@@ -184,11 +184,11 @@ public class FenetreJeux extends JFrame{
 	}
 	
 	/**
-	 * Met à jour la fenêtre
+	 * Met ï¿½ jour la fenï¿½tre
 	 * @throws PhotoNotFoundException Si la photo n'existe pas
-	 * @throws UnhandledFormatException Si la photo évènement a le mauvais format
+	 * @throws UnhandledFormatException Si la photo ï¿½vï¿½nement a le mauvais format
 	 * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
-	 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement
+	 * @throws WrongEventException Si l'ï¿½vï¿½nement ne correspond pas ï¿½ l'album ï¿½vï¿½nement
 	 */
 	public void miseAJour() throws PhotoNotFoundException, UnhandledFormatException, WrongFileException, WrongEventException {
 		photoAleatoire = choixPhotoHasard(choixAlbumHasard());

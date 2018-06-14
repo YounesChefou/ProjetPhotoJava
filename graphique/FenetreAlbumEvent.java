@@ -19,15 +19,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import exception.PhotoAlreadyHereException;
 import graphique.FenetreAlbumEvent.ChangeListener;
 import graphique.FenetreAlbumEvent.MenuListener;
 import modele.*;
+import exception.*;
+/**
+ * Classe d'interface graphique pour un album photo lié à un evenement.
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ */
 
 public class FenetreAlbumEvent extends JFrame implements Observer{
-//	private static final int SUIV=1,PREC=0,SUPP=2,ADD=3;
 	
 	private AlbumPhotoEvent album;
 	private AlbumControleurEvent controleur;
@@ -39,6 +44,14 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 	private JButton Bsuiv;
 	
 	
+	/**
+	 * Crée une fenetre pour visionner un album photo d'un evenement.
+	 * @param x abscisse du côté gauche supérieur de la fenetre
+	 * @param y ordonnée du côté gauche supéieur de la fenetre
+	 * @param w la largeur de la fenetre
+	 * @param h la hauteur de la fenetre
+	 * @param album l'album photo
+	 */
 	public FenetreAlbumEvent(int x, int y, int w, int h, AlbumPhotoEvent album){
 		super(album.getNom());
 		this.initialiseMenu();
@@ -46,19 +59,21 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		this.controleur = new AlbumControleurEvent(album);
 		album.addObserver(this);
 		this.initComposants(album.getPhotoAt(0));
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setBounds(x,y,w,h);
 		this.setVisible(true);
 	}
 	
 	/**
 	 * Initialise les différents composants de la barre de menu.
-	 * 
 	 */
 	private void initialiseMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		JMenu mdef = new JMenu("Photos");
 		JMenu mEvent = new JMenu("Event");
+		JMenu mJeu = new JMenu("Jeu");
+		/*Menu Photos*/
 		menuBar.add(mdef);
 		JMenuItem mdefAjouter = new JMenuItem("Ajouter une photo");
 		JMenuItem mdefEnlever = new JMenuItem("Enlever une photo");
@@ -80,6 +95,12 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		mEvent.add(mEventEnleverPers);
 		mEventAjouterPers.addActionListener(new MenuListener("Ajouter une personne"));
 		mEventEnleverPers.addActionListener(new MenuListener("Enlever une personne"));
+		/*Menu Jeu*/
+		menuBar.add(mJeu);
+		JMenuItem mLancerJeu = new JMenuItem("Lancer le jeu");
+		mJeu.add(mLancerJeu);
+		mLancerJeu.addActionListener(new MenuListener("Lancer le jeu"));
+		
 	}
 	/**
 	 * Initialise les différents composants de la fenêtre.
@@ -88,7 +109,6 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 	public void initComposants(Photo p){
 		this.labNomPhoto = new JLabel(p.getNom(), SwingConstants.CENTER);
 		this.add(this.labNomPhoto, BorderLayout.NORTH);
-//		this.labPhotoIcon = new JLabel(new ImageIcon(p.getPath()), SwingConstants.CENTER);
 		this.labPhotoIcon = new LabelImage(p.getPath());
 		this.add(this.labPhotoIcon, BorderLayout.CENTER);
 		JPanel boutons = new JPanel();
@@ -139,6 +159,27 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 		}
 	}
 	
+	/**
+	 * Ouvre une fenêtre qui permet à l'utilisateur de jouer à un jeu.
+	 */
+	
+	public void lancementJeu() {
+	try {
+		new FenetreJeux();
+	}
+	catch(PhotoNotFoundException e) {
+		System.out.println(e);
+	}
+	catch(UnhandledFormatException ex) {
+		System.out.println(ex);
+	}
+	catch(WrongFileException exc) {
+		System.out.println(exc);
+	}
+	catch(WrongEventException exce) {
+		System.out.println(exce);
+	}
+	}
 	/**
 	*Ouvre une fenetre qui demande le nom et l'adresse mail de la personne à ajouter
 	*/
@@ -289,7 +330,11 @@ public class FenetreAlbumEvent extends JFrame implements Observer{
 			case "Enlever une personne":
 				FenetreAlbumEvent.this.confirmationDelPers();
 				break;
+			case "Lancer le jeu":
+				FenetreAlbumEvent.this.lancementJeu();
+				break;
 			case "Trier l'album par date":
+				FenetreAlbumEvent.this.controleur.notificationTriModele();
 				break;
 			case "Sauvegarder l'album":
 				FenetreAlbumEvent.this.confirmationSauv();

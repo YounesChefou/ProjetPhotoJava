@@ -10,21 +10,24 @@ import javax.swing.*;
 import graphique.FenetreAlbum.MenuListener;
 import modele.*;
 
+/**
+ * Classe d'interface graphique pour un album photo (sous forme de texte).
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ */
 public class FenetreTexteAlbum extends JFrame implements Observer{
 		private AlbumPhoto album;
-		private AlbumControleur controleur;
 		private JTextArea  liste;
 		
-		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto al){
-			super(al.getNom());
-			this.album = al;
-			al.addObserver(this);
-			this.controleur = new AlbumControleur(al);
+		public FenetreTexteAlbum(int x, int y, int w, int h, AlbumPhoto album){
+			super(album.getNom());
+			this.album = album;
+			album.addObserver(this);
 			this.initialiseComposants();
+			this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); //Pour empêcher la fenêtre de se fermer
 			this.setBounds(x,y,w,h);
 			this.setVisible(true);
 		}
-	
+		
 		/**
 		* Initialise les différents composants de la fenêtre text sous forme de liste.
 	 	*/
@@ -33,26 +36,13 @@ public class FenetreTexteAlbum extends JFrame implements Observer{
 			this.liste = new JTextArea(this.album.toString());
 			this.add(liste, BorderLayout.CENTER);
 		}
-	
-		/**
-	 	* Met ajour la liste des photos dans le fenetre text.
-	 	* @param o, album photo .
-		* @param arg, .
-	 	*/
 		
-		public void update(Observable o, Object arg) {
-		if(arg instanceof PhotoEtatAlbum) {
-			PhotoEtatAlbum maPhotoEtat = (PhotoEtatAlbum) arg;
-			if(maPhotoEtat.getEtat().equals("photo ajoutée")) {
-				this.liste.append(maPhotoEtat.getNomPhoto()+"\n");
-			}
-			else {
-				String nouveauAlbum = this.al.toString();
-				System.out.println(maPhotoEtat.getNomPhoto());
-				nouveauAlbum = nouveauAlbum.replace(maPhotoEtat.getNomPhoto(),"");
-				this.liste.setText(nouveauAlbum);
-			}
+		
+		public void update(Observable o, Object arg){
+			this.liste.setText(this.album.toString());
 		}
 		
-	}
+		public AlbumPhoto getAlbum(){
+			return this.album;
+		}
 }
