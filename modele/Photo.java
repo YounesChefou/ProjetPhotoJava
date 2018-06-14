@@ -5,15 +5,28 @@ import java.text.*;
 import java.io.*;
 import exception.*;
 
-public class Photo implements Comparable<Photo>{
+/**
+  * Classe de gestionn d'une photo
+  * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+  */
+
+public class Photo implements Comparable<Photo> {
 	public static SimpleDateFormat DATEFORMAT;
 	
 	static{
-		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");
+		DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy"); 
 	}
 	
-	private String nom;
-	private GregorianCalendar date;
+	private String nom; // Nom de la photo
+	private GregorianCalendar date; // Date de la dernière modification de la photo
+	
+	/**
+	  * Construit une instance de Photo
+	  * @param nom 	Le nom de la photo
+	  * @throws PhotoNotFoundException Si la photo n'existe pas
+	  * @throws UnhandledFormatException Si la photo évènement a le mauvais format
+	  * @throws WrongFileException Si la photo ne se trouve pas au bon endroit
+	*/
 	
 	public Photo(String nom) throws PhotoNotFoundException, UnhandledFormatException, WrongFileException{
 		File f;
@@ -30,14 +43,23 @@ public class Photo implements Comparable<Photo>{
 			mois = Integer.parseInt(st.nextToken())-1;
 			annee = Integer.parseInt(st.nextToken());
 		}
-		this.nom = f.getName();
-		this.date = new GregorianCalendar(annee, mois, jour);
+		this.nom = f.getName(); // Initialise la variable d'instance nom
+		this.date = new GregorianCalendar(annee, mois, jour); // Initialise la variable d'instance date
 	}
+	
+	/**
+	  * Retourne le nom de la photo
+	  * @return le nom de la photo
+	  */
 	
 	public String getNom(){
 		return this.nom;
 	}
 	
+	/**
+	  * Retourne le chemin de la photo
+	  * @return images/ et le nom de la photo
+	  */
 	public String getPath(){
 		return new String("images/"+this.nom);
 	}
@@ -47,14 +69,6 @@ public class Photo implements Comparable<Photo>{
 	 */
 	public GregorianCalendar getDate(){
 		return this.date;
-	}
-	
-	/**
-	 * Compare les dates de deux photos
-	 * @return -1 si this.date est inférieur à  p, 0 si this.date est égal à  p, 1 si this.date est superieur à  p
-	 */
-	public int compareTo(Photo p) {
-			return this.date.compareTo(p.date);		
 	}
 	
 	/**
@@ -89,9 +103,16 @@ public class Photo implements Comparable<Photo>{
 	}
 	
 	/**
-	* Permet de determiner si deux instances Photo sont identiques
-	* @return true si oui, false sinon
-	*/
+	 * Compare les dates de deux photos
+	 * @return 
+	 */
+	 public int compareTo(Photo p) {
+		 return this.date.compareTo(p.date);	
+	 }
+	 
+	/**
+	 * Teste si les deux instances Photo sont identiques basés sur le nom et la date.
+	 */
 	public boolean equals(Object o){
 		Photo p = null;
 		if(o instanceof Photo){
@@ -103,9 +124,20 @@ public class Photo implements Comparable<Photo>{
 	return false;
 	}
 	
+	/**
+	  * Change le nom de la photo
+	  * @param nom 	Le nouveau nom de la photo
+	  */
+	
 	public void setNom(String nom){
 		this.nom = nom;
 	}
+	
+	/**
+	  * Permet d'afficher la photo sous la forme d'une chaîne de caractères
+	  * @return la chaîne de caractères
+	  */
+	
 	public String toString(){
 		String s = new String("Nom de la photo : "+this.nom+" prise le "+Photo.DATEFORMAT.format(this.date.getTime()));
 		return s;

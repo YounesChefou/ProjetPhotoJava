@@ -3,55 +3,123 @@ import java.util.*;
 import java.io.*;
 import exception.*;
 
+/**
+ * Classe de gestion d'un album photo évènement
+ * @author Younes Chefou; Haseeb Javaid; Thomas Blanco; Mathieu Jugi
+ *
+ */
 public class AlbumPhotoEvent extends Observable{
-		private String nom;
-		private Event evenement;
+		private String nom; // Le nom de l'album photo évènement
+		private Event evenement; // L'évènement de l'album photo évènement
 		private ArrayList<PhotoEvent> album;
 		
+		/**
+		 * Construit une instance d'AlbumPhotoEvent avec un évènement
+		 * @param E 	L'évènement de l'album
+		*/
+		
 		public AlbumPhotoEvent(Event E){
-			this.nom = E.getNomEvent();
-			this.evenement = E;
-			this.album = new ArrayList<PhotoEvent>();
+			this.nom = E.getNomEvent(); // Initialise la variable d'instance nom
+			this.evenement = E; // Initialise la variable d'instance evenement
+			this.album = new ArrayList<PhotoEvent>(); // Initialise la variable d'instance album
 		}
 		
+		/**
+		* Construit une instance d'AlbumPhotoEvent avec un nom
+		* @param nom 	Le nom de l'évènement de l'album
+		*/
+		
 		public AlbumPhotoEvent(String nom){
-			Event E = new Event(nom);
-			this.nom = E.getNomEvent();
-			this.evenement = E;
-			this.album = new ArrayList<PhotoEvent>();
+			Event E = new Event(nom); // Créer un évènement du nom passé en paramètre
+			this.nom = E.getNomEvent(); // Initialise la variable d'instance nom
+			this.evenement = E; // Initialise la variable d'instance evenement
+			this.album = new ArrayList<PhotoEvent>(); // Initialise la variable d'instance album
 		}
-
+		
+		/**
+		 	 * Retourne le nom de l'album photo évènement
+		 	 * @return Le nom de l'album photo évènement
+		*/
+		
 		public String getNom(){
 			return this.nom;
 		}
 		
+		/**
+		 * Trie les les photos de l'album par date
+		 */
+		public void trierParDate() {
+			Collections.sort(this.album);
+			this.setChanged();
+			this.notifyObservers();
+		}
+		/**
+		 * Retourne le nombre de photos dans l'album.
+		 * @return this.album.size(), taille de l'album.
+		 */
 		public int getTaille() {
 			return this.album.size();
 		}
-			
+		
+		/**
+		 * Retourne la photo à l'indice i de l'album
+		 * @param i l'indice de la photo
+		 * @return this.album.get(i), 
+		 */
 		public Photo getPhotoAt(int i) {
 			return this.album.get(i);
 		}
 		
+		/**
+		 * Permet de changer l'evenement lié à l'album.
+		 * @param ev le nouvel evenement
+		 */
 		public void setEvent(Event ev){
-			    this.evenement=ev;
-				this.setChanged();
-				this.notifyObservers(ev);
+			this.evenement=ev;
+			this.nom = ev.getNomEvent();
+			this.setChanged();
+			this.notifyObservers(ev);
 		}
+		
+		/**
+		 * Retourne l'album photo évènement
+		 * @return l'album photo évènement
+		 */
 		public ArrayList<PhotoEvent> getAlbum(){
 			return this.album;
 		}
 		
+		/**
+		 * Retourne l'évènement de l'album photo évènement
+		 * @return Le l'évènement de l'album photo évènement
+		 */
 		public Event getEvent(){
 			return this.evenement;
 		}
+		
+		/**
+		 * Change le nom de l'album photo évènement
+		 * @param nom 	Le nouveau nom de l'album photo évènement
+		 */
+		
 		public void setNom(String nom){
 			this.nom = nom;
 		}
 		
+		/**
+		 * Change les photos évènement de l'album photo évènement 
+		 * @param album 	Les nouvelles photos évènement
+		 */
+		
 		public void setAlbum(ArrayList<PhotoEvent> album){
 			this.album = album;
 		}
+		
+		/**
+		 * Ajout d'une photo évènement dans l'album photo évènement
+		 * @param p 	La photo évènement à ajouter
+		 * @throws WrongEventException Si l'évènement ne correspond pas à l'album évènement, PhotoAlreadyHereException si la photo est déjà présente dans l'album
+		 */
 		
 		public void ajouterPhoto(PhotoEvent p) throws PhotoAlreadyHereException,WrongEventException{
  			String nomAlbum = this.evenement.getNomEvent();		  
@@ -70,12 +138,22 @@ public class AlbumPhotoEvent extends Observable{
 			this.setChanged();
 			this.notifyObservers(photoEtat);
 		}
-	
+		
+		/**
+		 * Ajoute les photos contenus dans la liste en paramètre
+		 * @param listePhotos
+		 */
 		public void ajouterPhotosListe(ArrayList<PhotoEvent> listePhotos){
 			this.album.addAll(listePhotos);			
-		//this.setChanged();
-		//this.notifyObservers();
+			this.setChanged();
+			this.notifyObservers();
  		}
+		
+		/**
+		 * Ajoute les PhotoEvent correspondant aux fichiers contenus dans le tableau donné en paramètre.
+		 * @param files, le tableau des fichiers image
+		 * @throws PhotoAlreadyHereException si la photo est déjà présente dans l'album
+		 */
 		
 		public void ajouterPhotosFile(File[] files) throws PhotoAlreadyHereException{
 			PhotoEvent p;
@@ -110,14 +188,22 @@ public class AlbumPhotoEvent extends Observable{
 			this.setChanged();
 			this.notifyObservers();
 		}
-					
+		
+		/**
+		 * Retire de l'album la photo correspondant à la photo donné en paramètre.
+		 * @param p, la photo à retirer
+		 */
 		public void supprimerPhoto(Photo p) {
 			this.album.remove(p);
 			PhotoEtatAlbum photoEtat = new PhotoEtatAlbum(this.nom,p,"photo supprimée");
 			this.setChanged();
 			this.notifyObservers(photoEtat);
 		}
-					
+		
+		/**
+		 * Retire la photo situé à l'indice i de l'album.
+		 * @param i, l'indice
+		 */
 		public void supprimerPhotoIndex(int i) {
 			PhotoEvent p = this.album.get(i);
 			this.album.remove(i);
@@ -126,6 +212,11 @@ public class AlbumPhotoEvent extends Observable{
 			this.notifyObservers(photoEtat);
 		}
 		
+		/**
+		 * Ajoute à l'evenement une personne.
+		 * @param nom nom de la personne
+		 * @param mail adresse mail de la personne
+		 */
 		public void ajouterPersonne(String nom, String mail){
 			this.evenement.ajouterPersonne(new Personne(nom,mail));
 			this.setChanged();
@@ -257,6 +348,11 @@ public class AlbumPhotoEvent extends Observable{
 			
 			
 		}
+		
+		/**
+		 * Permet d'afficher l'album photo évènement sous la forme d'une chaîne de caractères
+		 * @return la chaîne de caractère
+		 */
 		public String toString(){
 			String s = new String("Album de l'evenement : "+this.getEvent().getNomEvent()+"\n\n");
 			for(PhotoEvent p : this.getAlbum()){
